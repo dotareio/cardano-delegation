@@ -1,0 +1,26 @@
+{
+  "name": "@dotareio/test-npm-package",
+  "version": "1.0.0",
+  "description": "Cip-30 Delegate Button Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotareio/test-npm-package.git"
+  },
+  "keywords": [
+    "cip30",
+    "cardano",
+    "ada",
+    "stake",
+    "pool"
+  ],
+  "author": "Dotare",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dotareio/test-npm-package/issues"
+  },
+  "homepage": "https://github.com/dotareio/test-npm-package#readme"
+}
