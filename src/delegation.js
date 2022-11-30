@@ -1,10 +1,15 @@
 import Cardano from "@dcspark/cardano-multiplatform-lib-nodejs";
 
-export const delegationTx = async (paymentAddress, stakeAddress, stakePool) => {
+
+export async function delegationTx(stakePoolId, walletName) {
   const numerator = Cardano.BigNum.zero();
   const denominator = Cardano.BigNum.zero();
 
-  const memPrice = Cardano.UnitInterval.new(numerator, denominator);
+  const UnitIntervalZero = Cardano.UnitInterval.new(numerator, denominator);
+
+  const Wallet = await window?.cardano?.[WalletName]?.enable();
+
+  const paymentAddr = await Wallet.then(c => c.getUsedAddresses)
 
   const txBuilderConfig = Cardano.TransactionBuilderConfigBuilder.new()
     .coins_per_utxo_byte(Cardano.BigNum.from_str("4310"))
@@ -18,7 +23,7 @@ export const delegationTx = async (paymentAddress, stakeAddress, stakePool) => {
     .pool_deposit(Cardano.BigNum.from_str("500000000"))
     .max_tx_size("16384")
     .max_value_size("5000")
-    .ex_unit_prices(Cardano.ExUnitPrices.new(memPrice, memPrice))
+    .ex_unit_prices(Cardano.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero))
     .collateral_percentage("150")
     .max_collateral_inputs("3")
     .build();
@@ -61,8 +66,8 @@ export const delegationTx = async (paymentAddress, stakeAddress, stakePool) => {
   txBuilder.set_ttl(
     Cardano.BigNum.from_str((723413 + 10000).toString())
   );
-  
-  const utxos = await getUtxos();
+
+  const utxos = getUtxos();
 
   const utxosCore = Cardano.TransactionUnspentOutputs.new();
   utxos.forEach((utxo) => utxosCore.add(utxo));
@@ -79,7 +84,15 @@ export const delegationTx = async (paymentAddress, stakeAddress, stakePool) => {
   console.log(tx);
 
   console.log(txHash);
-  console.log(Cardano.ExUnitPrices.new(memPrice, memPrice));
+  console.log(Cardano.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero));
 };
 
+const getUtxos = () => {
+
+}
+
+function enableWallet(walletName) {
+  const WalletName = walletName | undefined;
+
+}
 delegationTx();

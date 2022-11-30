@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "target": "es2015",
+        "declaration": true,
+        "outDir": "./dist"
+    },
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
