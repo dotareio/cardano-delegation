@@ -1,4 +1,4 @@
-import Cardano from "@dcspark/cardano-multiplatform-lib-nodejs";
+import * as Cardano from "@dcspark/cardano-multiplatform-lib-nodejs";
 
 
 export async function delegationTx(stakePoolId, walletName) {
@@ -7,9 +7,9 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const UnitIntervalZero = Cardano.UnitInterval.new(numerator, denominator);
 
-  const Wallet = await window?.cardano?.[WalletName]?.enable();
+  this.Wallet;
 
-  const paymentAddr = await Wallet.then(c => c.getUsedAddresses)
+  const paymentAddr = await this.Wallet.then(c => c.getUsedAddresses)
 
   const txBuilderConfig = Cardano.TransactionBuilderConfigBuilder.new()
     .coins_per_utxo_byte(Cardano.BigNum.from_str("4310"))
@@ -21,11 +21,11 @@ export async function delegationTx(stakePoolId, walletName) {
     )
     .key_deposit(Cardano.BigNum.from_str("2000000"))
     .pool_deposit(Cardano.BigNum.from_str("500000000"))
-    .max_tx_size("16384")
-    .max_value_size("5000")
+    .max_tx_size(16384)
+    .max_value_size(5000)
     .ex_unit_prices(Cardano.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero))
-    .collateral_percentage("150")
-    .max_collateral_inputs("3")
+    .collateral_percentage(150)
+    .max_collateral_inputs(3)
     .build();
 
   const txBuilder = Cardano.TransactionBuilder.new(txBuilderConfig);
