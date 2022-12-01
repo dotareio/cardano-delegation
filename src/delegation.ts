@@ -9,7 +9,8 @@ export async function delegationTx(stakePoolId, walletName) {
 
   this.Wallet;
 
-  const paymentAddr = await this.Wallet.then(c => c.getUsedAddresses)
+  window.cardano.getBalance();
+  const paymentAddr = await this.Wallet
 
   const txBuilderConfig = Cardano.TransactionBuilderConfigBuilder.new()
     .coins_per_utxo_byte(Cardano.BigNum.from_str("4310"))
