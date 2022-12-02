@@ -1,7 +1,7 @@
 import * as Cardano from "@dcspark/cardano-multiplatform-lib-nodejs";
 
 
-export async function delegationTx(stakePoolId, walletName) {
+export async function delegationTx(stakePoolId) {
   const numerator = Cardano.BigNum.zero();
   const denominator = Cardano.BigNum.zero();
 
