@@ -1,5 +1,5 @@
 {
-  "name": "@dotareio/cardano-buttons",
+  "name": "@dotare/cardano-delegation",
   "version": "1.0.0",
   "description": "Cip-30 Button Library w/ delegation",
   "main": "dist/index.js",

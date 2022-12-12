@@ -1,17 +1,15 @@
 import * as Cardano from "@dcspark/cardano-multiplatform-lib-nodejs";
 
 
-export async function delegationTx(stakePoolId) {
+export async function delegationTx(stakePoolId, walletName) {
   const numerator = Cardano.BigNum.zero();
   const denominator = Cardano.BigNum.zero();
 
   const UnitIntervalZero = Cardano.UnitInterval.new(numerator, denominator);
 
-  this.Wallet;
-
-  window.cardano.getBalance();
-  const paymentAddr = await this.Wallet
-
+  this.Wallet = await window.cardano[walletName].enable();
+  const usedAddresses = await this.Wallet.getUsedAddresses;
+/*
   const txBuilderConfig = Cardano.TransactionBuilderConfigBuilder.new()
     .coins_per_utxo_byte(Cardano.BigNum.from_str("4310"))
     .fee_algo(
@@ -73,27 +71,21 @@ export async function delegationTx(stakePoolId) {
   const utxosCore = Cardano.TransactionUnspentOutputs.new();
   utxos.forEach((utxo) => utxosCore.add(utxo));
 
-  txBuilder.add_inputs_from(
-    utxosCore,
-    Cardano.Address.from_bech32(account.paymentAddr)
-  );
+  //txBuilder.add_inputs_from(
+  //  utxosCore,
+  //  Cardano.Address.from_bech32(account.usedAddresses)
+  //);
 
 
   const txBody = txBuilder.build();
   const txHash = Cardano.hash_transaction(txBody);
+*/
+  console.log("usedAddresses: ", usedAddresses);
 
-  console.log(tx);
-
-  console.log(txHash);
-  console.log(Cardano.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero));
 };
 
 const getUtxos = () => {
 
 }
 
-function enableWallet(walletName) {
-  const WalletName = walletName | undefined;
-
-}
-delegationTx();
+delegationTx('123', 'nami');
