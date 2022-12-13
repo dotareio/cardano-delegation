@@ -1,7 +1,7 @@
 {
   "name": "@dotare/cardano-delegation",
   "version": "1.0.0",
-  "description": "Cip-30 Button Library w/ delegation",
+  "description": "A delegation button that uses cip30 to improve the quality of life for developers and delegators",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dotareio/test-npm-package.git"
+    "url": "git+https://github.com/dotareio/cardano-delegation.git"
   },
   "keywords": [
     "cip30",
@@ -25,9 +25,9 @@
   "author": "Dotare",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dotareio/test-npm-package/issues"
+    "url": "https://github.com/dotareio/cardano-delegation/issues"
   },
-  "homepage": "https://github.com/dotareio/test-npm-package#readme",
+  "homepage": "https://github.com/dotareio/cardano-delegation#readme",
   "dependencies": {
     "@dcspark/cardano-multiplatform-lib-nodejs": "^3.1.1",
     "ts-node": "^10.9.1",
