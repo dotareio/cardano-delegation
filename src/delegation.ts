@@ -83,9 +83,3 @@ export async function delegationTx(stakePoolId, walletName) {
   console.log("usedAddresses: ", usedAddresses);
 
 };
-
-const getUtxos = () => {
-
-}
-
-delegationTx('123', 'nami');

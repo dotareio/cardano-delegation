@@ -1,1 +1,1 @@
-export { delegationTx} from "./delegation";
+export { delegationTx } from "./delegation";
