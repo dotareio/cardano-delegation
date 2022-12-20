@@ -1,4 +1,4 @@
-import * as Cardano from "@dcspark/cardano-multiplatform-lib-nodejs";
+import * as Cardano from "@dcspark/cardano-multiplatform-lib-browser";
 
 
 export async function delegationTx(stakePoolId, walletName) {
