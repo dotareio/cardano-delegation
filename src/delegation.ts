@@ -1,11 +1,11 @@
-import * as Cardano from "@dcspark/cardano-multiplatform-lib-browser";
+import {BigNum, UnitInterval} from "@dcspark/cardano-multiplatform-lib-browser";
 
 
 export async function delegationTx(stakePoolId, walletName) {
-  const numerator = Cardano.BigNum.zero();
-  const denominator = Cardano.BigNum.zero();
+  const numerator = BigNum.zero();
+  const denominator = BigNum.zero();
 
-  const UnitIntervalZero = Cardano.UnitInterval.new(numerator, denominator);
+  const UnitIntervalZero = UnitInterval.new(numerator, denominator);
 
   this.Wallet = await window.cardano[walletName].enable();
   const usedAddresses = await this.Wallet.getUsedAddresses;
