@@ -10,7 +10,7 @@
   "scripts": {
     "start": "npx http-server --cors",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "build": "tsc"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -30,8 +30,11 @@
   },
   "homepage": "https://github.com/dotareio/cardano-delegation#readme",
   "devDependencies": {
+    "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "@dcspark/cardano-multiplatform-lib-browser": "^3.1.2"
