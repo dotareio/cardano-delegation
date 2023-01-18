@@ -15,7 +15,8 @@ export async function delegationTx(stakePoolId, walletName) {
   const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
 
   this.Wallet = await window.cardano[walletName].enable();
-  const usedAddresses = await this.Wallet.then(x => x.getUsedAddresses());
+  
+  const usedAddresses = await this.Wallet.getUsedAddresses();
   /*
     const txBuilderConfig = Cardano.TransactionBuilderConfigBuilder.new()
       .coins_per_utxo_byte(Cardano.BigNum.from_str("4310"))
@@ -88,5 +89,6 @@ export async function delegationTx(stakePoolId, walletName) {
     const txHash = Cardano.hash_transaction(txBody);
   */
   console.log("usedAddresses: ", usedAddresses);
+  console.log(UnitIntervalZero);
 
 };
