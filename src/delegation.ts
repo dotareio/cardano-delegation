@@ -1,12 +1,18 @@
-import { loadWasm } from "./load";
+import  Loader from "./load";
+
+export async function Cardano() {
+    await Loader.load();
+    return Loader.Cardano;
+  };
 
 export async function delegationTx(stakePoolId, walletName) {
-  const CardanoWasm = loadWasm();
 
-  const numerator = (await CardanoWasm).BigNum.zero();
-  const denominator = (await CardanoWasm).BigNum.zero();
+  const CardanoWasm = await Cardano();
 
-  const UnitIntervalZero = (await CardanoWasm).UnitInterval.new(numerator, denominator);
+  const numerator = CardanoWasm.BigNum.zero();
+  const denominator = CardanoWasm.BigNum.zero();
+
+  const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
 
   this.Wallet = await window.cardano[walletName].enable();
   const usedAddresses = await this.Wallet.getUsedAddresses;
