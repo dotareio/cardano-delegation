@@ -1,11 +1,11 @@
-import  Loader from "./load";
+import Loader from "./load";
 
 export async function Cardano() {
-    await Loader.load();
-    return Loader.Cardano;
-  };
+  await Loader.load();
+  return Loader.Cardano;
+};
 
-export async function delegationTx(stakePoolId, walletName) {
+export const delegationTx = async (stakePoolId, walletName) => {
 
   const CardanoWasm = await Cardano();
 
@@ -14,9 +14,9 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
 
-  this.Wallet = await window.cardano[walletName].enable();
-  
-  const usedAddresses = await this.Wallet.getUsedAddresses();
+  const Wallet = await window.cardano[walletName].enable();
+
+  const usedAddresses = await Wallet.getUsedAddresses();
   /*
     const txBuilderConfig = Cardano.TransactionBuilderConfigBuilder.new()
       .coins_per_utxo_byte(Cardano.BigNum.from_str("4310"))
