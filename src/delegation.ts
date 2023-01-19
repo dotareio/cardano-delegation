@@ -19,7 +19,7 @@ export async function delegationTx(stakePoolId, walletName) {
   const Wallet = await window.cardano[walletName].enable();
   let usedAddresses: string[]
 
-  if (!await window.cardano[walletName].isEnabled()) {
+  if (await window.cardano[walletName].isEnabled()) {
     usedAddresses = await Wallet.getUsedAddresses();
   } else {
     console.error("unable to run getUsedAddresses")
