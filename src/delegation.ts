@@ -15,13 +15,14 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
 
-  let Wallet: WalletApi;
+
+  const Wallet = await window.cardano[walletName].enable();
 
   if (!await window.cardano[walletName].isEnabled()) {
-    Wallet = await window.cardano[walletName].enable();
+    const usedAddresses = await Wallet.getUsedAddresses();
+  } else {
+    console.error("unable to run getUsedAddresses")
   }
-  
-  const usedAddresses = await Wallet.getUsedAddresses();
 
   const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
     .coins_per_utxo_byte(CardanoWasm.BigNum.from_str("4310"))
