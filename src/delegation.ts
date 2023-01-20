@@ -88,7 +88,7 @@ export async function delegationTx(stakePoolId, walletName) {
 
   txBuilder.add_inputs_from(
   //  utxosCore,
-   CardanoWasm.Address.from_bech32(usedAddresses[0])
+   CardanoWasm.Address.from_bech32(usedAddresses[1])
   );
 
 
