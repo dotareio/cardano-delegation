@@ -93,7 +93,7 @@ export async function delegationTx(stakePoolId, walletName) {
 
 
   const txBody = txBuilder.build();
-  // const txHash = CardanoWasm.hash_transaction(txBody);
+  const txHash = CardanoWasm.hash_transaction(txBody);
 
   console.log("usedAddresses: ", usedAddresses);
   console.log(UnitIntervalZero);
