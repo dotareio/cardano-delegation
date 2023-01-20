@@ -86,14 +86,14 @@ export async function delegationTx(stakePoolId, walletName) {
   // const utxosCore = CardanoWasm.TransactionUnspentOutputs.new();
   // utxos.forEach((utxo) => utxosCore.add(utxo));
 
-  //txBuilder.add_inputs_from(
+  txBuilder.add_inputs_from(
   //  utxosCore,
-  //  CardanoWasm.Address.from_bech32(account.usedAddresses)
-  //);
+   CardanoWasm.Address.from_bech32(usedAddresses[0])
+  );
 
 
   const txBody = txBuilder.build();
-  const txHash = CardanoWasm.hash_transaction(txBody);
+  // const txHash = CardanoWasm.hash_transaction(txBody);
 
   console.log("usedAddresses: ", usedAddresses);
   console.log(UnitIntervalZero);
