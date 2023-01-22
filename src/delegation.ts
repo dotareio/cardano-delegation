@@ -93,12 +93,12 @@ export async function delegationTx(stakePoolId, walletName) {
     .to_address()
     .to_bech32()
 
-  txBuilder.add_inputs_from(
+  txBuilder.add_input(
   //  utxosCore,
    CardanoWasm.Address.from_bech32(address)
   );
 
-
+txBuilder.a
   const txBody = txBuilder.build();
   const txHash = CardanoWasm.hash_transaction(txBody);
 
