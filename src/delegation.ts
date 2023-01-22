@@ -1,5 +1,6 @@
 import Loader from "./load";
 import { WalletApi } from "./types/globals";
+import { Buffer } from "buffer";
 
 export async function Cardano() {
   await Loader.load();
@@ -88,8 +89,7 @@ export async function delegationTx(stakePoolId, walletName) {
 
   txBuilder.add_inputs_from(
   //  utxosCore,
-  //  CardanoWasm.Address.from_bech32(usedAddresses[1])
-   CardanoWasm.Address.from_keyhash(usedAddresses[1])
+   CardanoWasm.Address.from_bech32(Buffer.from(usedAddresses[1], "hex"))
   );
 
 
@@ -97,6 +97,8 @@ export async function delegationTx(stakePoolId, walletName) {
   const txHash = CardanoWasm.hash_transaction(txBody);
 
   console.log("usedAddresses: ", usedAddresses);
+  console.log("Buffered: ", Buffer.from(usedAddresses[1], "hex"));
+  
   console.log(UnitIntervalZero);
 
   console.log(txHash);

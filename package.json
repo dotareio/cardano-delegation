@@ -37,6 +37,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "@dcspark/cardano-multiplatform-lib-browser": "^3.1.2"
+    "@dcspark/cardano-multiplatform-lib-browser": "^3.1.2",
+    "buffer": "^6.0.3"
   }
 }
