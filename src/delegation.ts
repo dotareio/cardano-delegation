@@ -86,10 +86,16 @@ export async function delegationTx(stakePoolId, walletName) {
 
   // const utxosCore = CardanoWasm.TransactionUnspentOutputs.new();
   // utxos.forEach((utxo) => utxosCore.add(utxo));
+  const addressHex = Buffer.from(usedAddresses[0], "hex")
+  const address = CardanoWasm.BaseAddress.from_address(
+    CardanoWasm.Address.from_bytes(addressHex)
+  )
+    .to_address()
+    .to_bech32()
 
   txBuilder.add_inputs_from(
   //  utxosCore,
-   CardanoWasm.Address.from_bech32(Buffer.from(usedAddresses[1], "hex"))
+   CardanoWasm.Address.from_bech32(address)
   );
 
 
@@ -97,7 +103,8 @@ export async function delegationTx(stakePoolId, walletName) {
   const txHash = CardanoWasm.hash_transaction(txBody);
 
   console.log("usedAddresses: ", usedAddresses);
-  console.log("Buffered: ", Buffer.from(usedAddresses[1], "hex"));
+  console.log("hex: ", Buffer.from(usedAddresses[1], "hex"));
+  console.log("bech32: ", address);
   
   console.log(UnitIntervalZero);
 
