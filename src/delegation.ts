@@ -15,13 +15,12 @@ export async function delegationTx(stakePoolId, walletName) {
   const denominator = CardanoWasm.BigNum.zero();
 
   const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
-
-
   const Wallet = await window.cardano[walletName].enable();
   let usedAddresses: string[]
-
+  let rewardAddress: string;
   if (await window.cardano[walletName].isEnabled()) {
     usedAddresses = await Wallet.getUsedAddresses();
+    rewardAddress = await Wallet.getRewardAddresses()[0];
   } else {
     console.error("unable to run getUsedAddresses")
   }
@@ -45,14 +44,16 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const txBuilder = CardanoWasm.TransactionBuilder.new(txBuilderConfig);
 
-  CardanoWasm.SingleCertificateBuilder.new(
-    CardanoWasm.Certificate.new_stake_registration(
-      CardanoWasm.StakeRegistration.new(
-        CardanoWasm.StakeCredential.from_keyhash(
-          CardanoWasm.Ed25519KeyHash.from_bytes(
-            Buffer.from(
-              "5c2c538662dc6739fc1fa1885008f7b1633d5451d9b25ca1371cf4d9",
-              "hex"
+  txBuilder.add_cert(
+    CardanoWasm.SingleCertificateBuilder.new(
+      CardanoWasm.Certificate.new_stake_registration(
+        CardanoWasm.StakeRegistration.new(
+          CardanoWasm.StakeCredential.from_keyhash(
+            CardanoWasm.Ed25519KeyHash.from_bytes(
+              Buffer.from(
+                rewardAddress,
+                "hex"
+              )
             )
           )
         )
@@ -62,18 +63,21 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const poolKeyHash =
     "2a748e3885f6f73320ad16a8331247b81fe01b8d39f57eec9caa5091"; //BERRY
-  CardanoWasm.SingleCertificateBuilder.new(
-    CardanoWasm.Certificate.new_stake_delegation(
-      CardanoWasm.StakeDelegation.new(
-        CardanoWasm.StakeCredential.from_keyhash(
-          CardanoWasm.Ed25519KeyHash.from_bytes(
-            Buffer.from(
-              "5c2c538662dc6739fc1fa1885008f7b1633d5451d9b25ca1371cf4d9",
-              "hex"
+  txBuilder.add_cert(
+
+    CardanoWasm.SingleCertificateBuilder.new(
+      CardanoWasm.Certificate.new_stake_delegation(
+        CardanoWasm.StakeDelegation.new(
+          CardanoWasm.StakeCredential.from_keyhash(
+            CardanoWasm.Ed25519KeyHash.from_bytes(
+              Buffer.from(
+                rewardAddress,
+                "hex"
+              )
             )
-          )
-        ),
-        CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(poolKeyHash, "hex"))
+          ),
+          CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(poolKeyHash, "hex"))
+        )
       )
     )
   );
@@ -93,19 +97,19 @@ export async function delegationTx(stakePoolId, walletName) {
     .to_address()
     .to_bech32()
 
-  txBuilder.add_input(
-  //  utxosCore,
-   CardanoWasm.Address.from_bech32(address)
+  txBuilder.add_inputs_from(
+    //  utxosCore,
+    CardanoWasm.Address.from_bech32(address)
   );
 
-txBuilder.a
+  txBuilder.a
   const txBody = txBuilder.build();
   const txHash = CardanoWasm.hash_transaction(txBody);
 
   console.log("usedAddresses: ", usedAddresses);
   console.log("hex: ", Buffer.from(usedAddresses[1], "hex"));
   console.log("bech32: ", address);
-  
+
   console.log(UnitIntervalZero);
 
   console.log(txHash);
