@@ -7,22 +7,25 @@ export async function Cardano() {
   return Loader.Cardano;
 };
 
-export async function delegationTx(stakePoolId, walletName) {
-
+export async function delegationTx(stakePoolId, walletName) {  
+  // const numerator = CardanoWasm.BigNum.zero();
+  // const denominator = CardanoWasm.BigNum.zero();
+  // const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
   const CardanoWasm = await Cardano();
-
-  const numerator = CardanoWasm.BigNum.zero();
-  const denominator = CardanoWasm.BigNum.zero();
-
-  const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
   const Wallet = await window.cardano[walletName].enable();
+
   let usedAddresses: string[]
   let rewardAddress: string;
+
   if (await window.cardano[walletName].isEnabled()) {
-    usedAddresses = await Wallet.getUsedAddresses();
-    rewardAddress = await Wallet.getRewardAddresses()[0];
-  } else {
-    console.error("unable to run getUsedAddresses")
+    try{
+
+      usedAddresses = await Wallet.getUsedAddresses();
+      rewardAddress = await Wallet.getRewardAddresses()[0];
+    }catch(err) {
+      console.error("broken at line 25", err)
+      return
+    }
   }
 
   const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
@@ -37,7 +40,7 @@ export async function delegationTx(stakePoolId, walletName) {
     .pool_deposit(CardanoWasm.BigNum.from_str("500000000"))
     .max_tx_size(16384)
     .max_value_size(5000)
-    .ex_unit_prices(CardanoWasm.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero))
+    .ex_unit_prices(CardanoWasm.ExUnitPrices.new(CardanoWasm.ExUnitPrices.mem_price(), CardanoWasm.ExUnitPrices.step_price()))
     .collateral_percentage(150)
     .max_collateral_inputs(3)
     .build();
