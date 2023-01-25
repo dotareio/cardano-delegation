@@ -8,12 +8,12 @@ export async function Cardano() {
 };
 
 export async function delegationTx(stakePoolId, walletName) {
-  // const numerator = CardanoWasm.BigNum.zero();
-  // const denominator = CardanoWasm.BigNum.zero();
-  // const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
   const CardanoWasm = await Cardano();
   const Wallet = await window.cardano[walletName].enable();
-
+  
+  const numerator = CardanoWasm.BigNum.zero();
+  const denominator = CardanoWasm.BigNum.zero();
+  const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
   let usedAddresses: string[];
   let rewardAddress: string;
 
@@ -40,7 +40,7 @@ export async function delegationTx(stakePoolId, walletName) {
     .pool_deposit(CardanoWasm.BigNum.from_str("500000000"))
     .max_tx_size(16384)
     .max_value_size(5000)
-    .ex_unit_prices(CardanoWasm.ExUnitPrices.new(CardanoWasm.ExUnitPrices.mem_price(), CardanoWasm.ExUnitPrices.step_price()))
+    .ex_unit_prices(CardanoWasm.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero))
     .collateral_percentage(150)
     .max_collateral_inputs(3)
     .build();
