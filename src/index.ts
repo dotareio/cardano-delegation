@@ -1,1 +1,1 @@
-export { delegationTx, getUtxos } from "./delegation";
+export { delegationTx } from "./delegation";
