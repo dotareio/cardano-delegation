@@ -105,7 +105,7 @@ export async function delegationTx(stakePoolId, walletName) {
     CardanoWasm.BigNum.from_str("123432")
   )
 
-  txBuilder.add_input(CardanoWasm.InputBuilderResult.free())
+  // txBuilder.add_input()
 
 
   const txBody = txBuilder.build();
