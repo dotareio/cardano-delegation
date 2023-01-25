@@ -7,7 +7,20 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            compilerOptions: {
+                                noEmit: false,
+                            },
+                        },
+                    }],
+                include: [
+                    path.resolve(__dirname, "./src/types/global.d.ts"),
+                    path.resolve(__dirname, "./src/load.ts"),
+                    path.resolve(__dirname, "./src/delegation.ts")
+                ],
                 exclude: /node_modules/,
             },
         ],
@@ -25,4 +38,4 @@ module.exports = {
         libraryTarget: 'umd'
     },
     mode: 'development'
-};
+}

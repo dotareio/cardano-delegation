@@ -14,7 +14,7 @@ export async function delegationTx(stakePoolId, walletName) {
   const CardanoWasm = await Cardano();
   const Wallet = await window.cardano[walletName].enable();
 
-  let usedAddresses: string[]
+  let usedAddresses: string[];
   let rewardAddress: string;
 
   if (await window.cardano[walletName].isEnabled()) {
