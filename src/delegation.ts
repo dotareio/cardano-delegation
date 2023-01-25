@@ -7,7 +7,7 @@ export async function Cardano() {
   return Loader.Cardano;
 };
 
-export async function delegationTx(stakePoolId, walletName) {  
+export async function delegationTx(stakePoolId, walletName) {
   // const numerator = CardanoWasm.BigNum.zero();
   // const denominator = CardanoWasm.BigNum.zero();
   // const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
@@ -18,11 +18,11 @@ export async function delegationTx(stakePoolId, walletName) {
   let rewardAddress: string;
 
   if (await window.cardano[walletName].isEnabled()) {
-    try{
+    try {
 
       usedAddresses = await Wallet.getUsedAddresses();
       rewardAddress = await Wallet.getRewardAddresses()[0];
-    }catch(err) {
+    } catch (err) {
       console.error("broken at line 25", err)
       return
     }
@@ -100,9 +100,9 @@ export async function delegationTx(stakePoolId, walletName) {
     .to_address()
     .to_bech32()
 
-  
 
-  const txOutput = CardanoWasm.TransactionOutput.new(address, )
+
+  const txOutput = CardanoWasm.TransactionOutput.new(address,)
 
 
   const txBody = txBuilder.build();
@@ -118,30 +118,65 @@ export async function delegationTx(stakePoolId, walletName) {
 
 export async function getUtxos(wallet) {
 
-    const CardanoWasm = await Cardano();
-    const Wallet = await window.cardano[wallet].enable();
-    const utxos = await Wallet.getUtxos();
+  const CardanoWasm = await Cardano();
+  const Wallet = await window.cardano[wallet].enable();
+  const utxos = await Wallet.getUtxos();
 
-        let Utxos = utxos.map(u => CardanoWasm.TransactionUnspentOutput.from_bytes(
-            Buffer.from(
-                u,
-                'hex'
-            )
-        ))
-        let UTXOS = []
-        for (let utxo of Utxos) {
-            let assets = this._utxoToAssets(utxo)
+  let Utxos = utxos.map(u => CardanoWasm.TransactionUnspentOutput.from_bytes(
+    Buffer.from(
+      u,
+      'hex'
+    )
+  ))
+  let UTXOS = []
+  for (let utxo of Utxos) {
+    let assets = _utxoToAssets(utxo)
 
-            UTXOS.push({
-                txHash: Buffer.from(
-                    utxo.input().transaction_id().to_bytes(),
-                    'hex'
-                ).toString('hex'),
-                txId: utxo.input().index(),
-                amount: assets
-            })
-        }
-        // return UTXOS
-        console.log(UTXOS);
+    UTXOS.push({
+      txHash: Buffer.from(
+        utxo.input().transaction_id().to_bytes(),
+        'hex'
+      ).toString('hex'),
+      txId: utxo.input().index(),
+      amount: assets
+    })
+  }
+  // return UTXOS
+  console.log(UTXOS);
 
+}
+
+function _utxoToAssets(utxo) {
+  let value = utxo.output().amount()
+  const assets = [];
+  assets.push({
+    unit: 'lovelace',
+    quantity: value.coin().to_str()
+  });
+  if (value.multiasset()) {
+    const multiAssets = value.multiasset().keys();
+    for (let j = 0; j < multiAssets.len(); j++) {
+      const policy = multiAssets.get(j);
+      const policyAssets = value.multiasset().get(policy);
+      const assetNames = policyAssets.keys();
+      for (let k = 0; k < assetNames.len(); k++) {
+        const policyAsset = assetNames.get(k);
+        const quantity = policyAssets.get(policyAsset);
+        const asset =
+          Buffer.from(
+            policy.to_bytes()
+          ).toString('hex') + "." +
+          Buffer.from(
+            policyAsset.name()
+          ).toString('ascii')
+
+
+        assets.push({
+          unit: asset,
+          quantity: quantity.to_str(),
+        });
+      }
+    }
+  }
+  return assets;
 }
