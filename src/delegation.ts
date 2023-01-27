@@ -41,8 +41,7 @@ export async function delegationTx(stakePoolId, walletName) {
     .max_tx_size(16384)
     .max_value_size(5000)
     .ex_unit_prices(CardanoWasm.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero))
-    .collateral_percentage(150)
-    .max_collateral_inputs(3)
+    .prefer_pure_change(true)
     .build();
 
   const txBuilder = CardanoWasm.TransactionBuilder.new(txBuilderConfig);
