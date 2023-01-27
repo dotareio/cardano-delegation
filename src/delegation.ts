@@ -62,6 +62,7 @@ export async function delegationTx(stakePoolId, walletName) {
         )
       )
   );
+console.log("line 65", certs);
 
   const poolKeyHash =
     "2a748e3885f6f73320ad16a8331247b81fe01b8d39f57eec9caa5091"; //BERRY
