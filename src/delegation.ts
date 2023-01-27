@@ -108,17 +108,28 @@ console.log("Made it to line 102", address);
 
   txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
 
-  const transaction = await txBuilder.construct();
-
-  
   const txBody = txBuilder.build();
-  const txHash = CardanoWasm.hash_transaction(txBody);
   
+  const transaction = CardanoWasm.Transaction.new(
+    txBuilder.build(),
+    CardanoWasm.TransactionWitnessSet.new()
+  )
+
+  const witness = await Wallet.signTx(
+    Buffer.from(transaction.to_bytes(), "hex").toString("hex"),
+    false
+    )
+  const signedTx = CardanoWasm.Transaction.new(
+    txBody,
+    CardanoWasm.TransactionWitnessSet.from_bytes(Buffer.from(witness, "hex")),
+    undefined
+  )
+
   console.log("usedAddresses: ", usedAddresses);
   console.log("hex: ", Buffer.from(usedAddresses[0], "hex"));
   console.log("bech32: ", address);
   
-  console.log(txHash, transaction);
+  console.log(signedTx, witness);
 
   return transaction;
 };
