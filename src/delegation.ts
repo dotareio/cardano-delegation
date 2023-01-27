@@ -70,7 +70,7 @@ export async function delegationTx(stakePoolId, walletName) {
       CardanoWasm.Certificate.new_stake_delegation(
         CardanoWasm.StakeDelegation.new(
           CardanoWasm.StakeCredential.from_keyhash(
-            CardanoWasm.Ed25519KeyHash.from_address(
+            CardanoWasm.Ed25519KeyHash.from_bytes(
               Buffer.from(
                 rewardAddress.slice(2),
                 "hex"
