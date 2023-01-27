@@ -88,7 +88,7 @@ console.log("line 65", certs);
     CardanoWasm.BigNum.from_str((723413 + 10000).toString())
   );
 
-  const addressHex = usedAddresses[0].slice(2)
+  const addressHex = usedAddresses[0];
   const address = CardanoWasm.BaseAddress.from_address(
     CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex"))
   )
