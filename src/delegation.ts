@@ -95,15 +95,15 @@ console.log("line 65", certs);
     .to_address()
     .to_bech32()
 
-  const utxos = await getUtxos(Wallet, CardanoWasm);
+  const utxos = (await Wallet.getUtxos()).map(utxo => CardanoWasm.TransactionUnspentOutput.from_bytes(Buffer.from(utxo, "hex")))
 
-  const utxosCore = CardanoWasm.TransactionUnspentOutputs.new();
-  utxos.forEach((utxo) => utxosCore.add(utxo));
+  const utxoOut = CardanoWasm.TransactionUnspentOutputs.new();
+  utxos.map((utxo) => utxoOut.add(utxo));
 console.log("Made it to line 102", address);
 
   txBuilder.add_inputs_from(
-    utxosCore,
-    CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex"))
+    utxoOut,
+    0
   );
 
   txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
@@ -125,65 +125,65 @@ console.log("Made it to line 102", address);
 
 
 
-async function getUtxos(Wallet, CardanoWasm) {
+// async function getUtxos(Wallet, CardanoWasm) {
 
-  const utxos = await Wallet.getUtxos();
+//   const utxos = await Wallet.getUtxos();
 
-  let Utxos = utxos.map(u => CardanoWasm.TransactionUnspentOutput.from_bytes(
-    Buffer.from(
-      u,
-      'hex'
-    )
-  ))
-  let UTXOS = []
-  for (let utxo of Utxos) {
-    let assets = _utxoToAssets(utxo)
+//   let Utxos = utxos.map(u => CardanoWasm.TransactionUnspentOutput.from_bytes(
+//     Buffer.from(
+//       u,
+//       'hex'
+//     )
+//   ))
+//   let UTXOS = []
+//   for (let utxo of Utxos) {
+//     let assets = _utxoToAssets(utxo)
 
-    UTXOS.push({
-      txHash: Buffer.from(
-        utxo.input().transaction_id().to_bytes(),
-        'hex'
-      ).toString('hex'),
-      txId: utxo.input().index(),
-      amount: assets
-    })
-  }
-  console.log(UTXOS);
-  return UTXOS
+//     UTXOS.push({
+//       txHash: Buffer.from(
+//         utxo.input().transaction_id().to_bytes(),
+//         'hex'
+//       ).toString('hex'),
+//       txId: utxo.input().index(),
+//       amount: assets
+//     })
+//   }
+//   console.log(UTXOS);
+//   return UTXOS
 
-}
+// }
 
-function _utxoToAssets(utxo) {
-  let value = utxo.output().amount()
-  const assets = [];
-  assets.push({
-    unit: 'lovelace',
-    quantity: value.coin().to_str()
-  });
-  if (value.multiasset()) {
-    const multiAssets = value.multiasset().keys();
-    for (let j = 0; j < multiAssets.len(); j++) {
-      const policy = multiAssets.get(j);
-      const policyAssets = value.multiasset().get(policy);
-      const assetNames = policyAssets.keys();
-      for (let k = 0; k < assetNames.len(); k++) {
-        const policyAsset = assetNames.get(k);
-        const quantity = policyAssets.get(policyAsset);
-        const asset =
-          Buffer.from(
-            policy.to_bytes()
-          ).toString('hex') + "." +
-          Buffer.from(
-            policyAsset.name()
-          ).toString('ascii')
+// function _utxoToAssets(utxo) {
+//   let value = utxo.output().amount()
+//   const assets = [];
+//   assets.push({
+//     unit: 'lovelace',
+//     quantity: value.coin().to_str()
+//   });
+//   if (value.multiasset()) {
+//     const multiAssets = value.multiasset().keys();
+//     for (let j = 0; j < multiAssets.len(); j++) {
+//       const policy = multiAssets.get(j);
+//       const policyAssets = value.multiasset().get(policy);
+//       const assetNames = policyAssets.keys();
+//       for (let k = 0; k < assetNames.len(); k++) {
+//         const policyAsset = assetNames.get(k);
+//         const quantity = policyAssets.get(policyAsset);
+//         const asset =
+//           Buffer.from(
+//             policy.to_bytes()
+//           ).toString('hex') + "." +
+//           Buffer.from(
+//             policyAsset.name()
+//           ).toString('ascii')
 
 
-        assets.push({
-          unit: asset,
-          quantity: quantity.to_str(),
-        });
-      }
-    }
-  }
-  return assets;
-}
+//         assets.push({
+//           unit: asset,
+//           quantity: quantity.to_str(),
+//         });
+//       }
+//     }
+//   }
+//   return assets;
+// }
