@@ -1,7 +1,6 @@
 import Loader from "./load";
 import { WalletApi } from "./types/globals";
 import { Buffer } from "buffer";
-import { Certificates } from "@dcspark/cardano-multiplatform-lib-browser";
 
 export async function Cardano() {
   await Loader.load();
@@ -47,7 +46,7 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const txBuilder = CardanoWasm.TransactionBuilder.new(txBuilderConfig);
 
-  const certs: Certificates = CardanoWasm.Certificates.new()
+  const certs = CardanoWasm.Certificates.new()
 
   certs.add(
       CardanoWasm.Certificate.new_stake_registration(
@@ -99,6 +98,7 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const utxosCore = CardanoWasm.TransactionUnspentOutputs.new();
   utxos.forEach((utxo) => utxosCore.add(utxo));
+console.log("Made it to line 102", address);
 
   txBuilder.add_inputs_from(
     utxosCore,
