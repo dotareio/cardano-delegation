@@ -1,6 +1,7 @@
 import Loader from "./load";
 import { WalletApi } from "./types/globals";
 import { Buffer } from "buffer";
+import { Certificates } from "@dcspark/cardano-multiplatform-lib-browser";
 
 export async function Cardano() {
   await Loader.load();
@@ -46,7 +47,9 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const txBuilder = CardanoWasm.TransactionBuilder.new(txBuilderConfig);
 
-  txBuilder.add_certificate(
+  const certs: Certificates = CardanoWasm.Certificates.new()
+
+  certs.add(
       CardanoWasm.Certificate.new_stake_registration(
         CardanoWasm.StakeRegistration.new(
           CardanoWasm.StakeCredential.from_keyhash(
@@ -63,7 +66,7 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const poolKeyHash =
     "2a748e3885f6f73320ad16a8331247b81fe01b8d39f57eec9caa5091"; //BERRY
-  txBuilder.add_certificate(
+    certs.add(
       CardanoWasm.Certificate.new_stake_delegation(
         CardanoWasm.StakeDelegation.new(
           CardanoWasm.StakeCredential.from_keyhash(
@@ -78,6 +81,8 @@ export async function delegationTx(stakePoolId, walletName) {
         )
       )
   );
+
+  txBuilder.set_certs(certs);
 
   txBuilder.set_ttl(
     CardanoWasm.BigNum.from_str((723413 + 10000).toString())
