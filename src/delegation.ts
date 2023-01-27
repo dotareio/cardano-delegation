@@ -21,7 +21,7 @@ export async function delegationTx(stakePoolId, walletName) {
     try {
 
       usedAddresses = await Wallet.getUsedAddresses();
-      rewardAddress = await Wallet.getRewardAddresses()[0];
+      rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
     } catch (err) {
       console.error("broken at line 25", err)
       return
