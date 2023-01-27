@@ -1,6 +1,6 @@
 {
   "name": "@dotare/cardano-delegation",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "A delegation button that uses cip30 to improve the quality of life for developers and delegators",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
