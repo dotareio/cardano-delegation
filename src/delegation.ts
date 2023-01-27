@@ -5,7 +5,7 @@ import { Buffer } from "buffer";
 export async function Cardano() {
   await Loader.load();
   return Loader.Cardano;
-};
+}
 
 export async function delegationTx(stakePoolId, walletName) {
   const CardanoWasm = await Cardano();
@@ -47,8 +47,7 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const txBuilder = CardanoWasm.TransactionBuilder.new(txBuilderConfig);
 
-  txBuilder.add_cert(
-    CardanoWasm.SingleCertificateBuilder.new(
+  txBuilder.add_certificate(
       CardanoWasm.Certificate.new_stake_registration(
         CardanoWasm.StakeRegistration.new(
           CardanoWasm.StakeCredential.from_keyhash(
@@ -61,14 +60,11 @@ export async function delegationTx(stakePoolId, walletName) {
           )
         )
       )
-    )
   );
 
   const poolKeyHash =
     "2a748e3885f6f73320ad16a8331247b81fe01b8d39f57eec9caa5091"; //BERRY
-  txBuilder.add_cert(
-
-    CardanoWasm.SingleCertificateBuilder.new(
+  txBuilder.add_certificate(
       CardanoWasm.Certificate.new_stake_delegation(
         CardanoWasm.StakeDelegation.new(
           CardanoWasm.StakeCredential.from_keyhash(
@@ -82,7 +78,6 @@ export async function delegationTx(stakePoolId, walletName) {
           CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(poolKeyHash, "hex"))
         )
       )
-    )
   );
 
   txBuilder.set_ttl(
@@ -98,12 +93,6 @@ export async function delegationTx(stakePoolId, walletName) {
 
   const utxos = await getUtxos(Wallet, CardanoWasm);
 
-
-  const txOutput = CardanoWasm.TransactionOutput.new(address, utxos[0])
-
-  txBuilder.set_ttl(
-    CardanoWasm.BigNum.from_str("123432")
-  )
   const utxosCore = Loader.Cardano.TransactionUnspentOutputs.new();
   utxos.forEach((utxo) => utxosCore.add(utxo));
 
@@ -124,7 +113,7 @@ export async function delegationTx(stakePoolId, walletName) {
   console.log("hex: ", Buffer.from(usedAddresses[0], "hex"));
   console.log("bech32: ", address);
   
-  console.log(txHash, txOutput, transaction);
+  console.log(txHash, transaction);
 
   return transaction;
 };
