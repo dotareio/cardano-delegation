@@ -5,6 +5,7 @@ class Loader {
     /**
      * @private
      */
+    // eslint-disable-next-line
     this._wasm = await import("@emurgo/cardano-serialization-lib-browser");
   }
 

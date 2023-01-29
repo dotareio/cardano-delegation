@@ -35,7 +35,10 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
         library: 'cardano-delegation',
-        libraryTarget: 'umd'
+        libraryTarget: 'umd',
     },
-    mode: 'development'
+    stats: {
+        errorDetails: true
+    },
+    mode: 'development' 
 }
