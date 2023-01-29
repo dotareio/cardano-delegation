@@ -7,7 +7,7 @@ export async function Cardano() {
   return Loader.Cardano;
 }
 
-export async function delegationTx(stakePoolId, walletName) {
+export async function delegationTx(stakePoolHash, walletName) {
   const CardanoWasm = await Cardano();
   const Wallet = await window.cardano[walletName].enable();
   
@@ -64,8 +64,6 @@ export async function delegationTx(stakePoolId, walletName) {
   );
 console.log("line 65", certs);
 
-  const poolKeyHash =
-    "2a748e3885f6f73320ad16a8331247b81fe01b8d39f57eec9caa5091"; //BERRY
     certs.add(
       CardanoWasm.Certificate.new_stake_delegation(
         CardanoWasm.StakeDelegation.new(
@@ -77,7 +75,7 @@ console.log("line 65", certs);
               )
             )
           ),
-          CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(poolKeyHash, "hex"))
+          CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(stakePoolHash, "hex"))
         )
       )
   );
@@ -133,68 +131,3 @@ console.log("Made it to line 102", address);
 
   return transaction;
 };
-
-
-
-// async function getUtxos(Wallet, CardanoWasm) {
-
-//   const utxos = await Wallet.getUtxos();
-
-//   let Utxos = utxos.map(u => CardanoWasm.TransactionUnspentOutput.from_bytes(
-//     Buffer.from(
-//       u,
-//       'hex'
-//     )
-//   ))
-//   let UTXOS = []
-//   for (let utxo of Utxos) {
-//     let assets = _utxoToAssets(utxo)
-
-//     UTXOS.push({
-//       txHash: Buffer.from(
-//         utxo.input().transaction_id().to_bytes(),
-//         'hex'
-//       ).toString('hex'),
-//       txId: utxo.input().index(),
-//       amount: assets
-//     })
-//   }
-//   console.log(UTXOS);
-//   return UTXOS
-
-// }
-
-// function _utxoToAssets(utxo) {
-//   let value = utxo.output().amount()
-//   const assets = [];
-//   assets.push({
-//     unit: 'lovelace',
-//     quantity: value.coin().to_str()
-//   });
-//   if (value.multiasset()) {
-//     const multiAssets = value.multiasset().keys();
-//     for (let j = 0; j < multiAssets.len(); j++) {
-//       const policy = multiAssets.get(j);
-//       const policyAssets = value.multiasset().get(policy);
-//       const assetNames = policyAssets.keys();
-//       for (let k = 0; k < assetNames.len(); k++) {
-//         const policyAsset = assetNames.get(k);
-//         const quantity = policyAssets.get(policyAsset);
-//         const asset =
-//           Buffer.from(
-//             policy.to_bytes()
-//           ).toString('hex') + "." +
-//           Buffer.from(
-//             policyAsset.name()
-//           ).toString('ascii')
-
-
-//         assets.push({
-//           unit: asset,
-//           quantity: quantity.to_str(),
-//         });
-//       }
-//     }
-//   }
-//   return assets;
-// }
