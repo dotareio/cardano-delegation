@@ -127,7 +127,12 @@ console.log("Made it to line 102", address);
   console.log("hex: ", Buffer.from(usedAddresses[0], "hex"));
   console.log("bech32: ", address);
   
-  console.log(signedTx, witness);
 
-  return transaction;
+  const txHash = await Wallet.submitTx(
+    Buffer.from(signedTx.to_bytes()).toString("hex")
+  );
+
+  console.log(txHash);
+
+  return ([txHash, address]);
 };
