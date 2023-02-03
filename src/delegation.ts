@@ -43,7 +43,7 @@ export async function delegationTx(stakePoolHash, walletName) {
     let latestBlockJson = await latestBlockResponse.json();
     latestBlock = await latestBlockJson.height;
   }
-  const stakeAddress = await CardanoWasm.RewardAddress.from_address(CardanoWasm.Address.from_bytes(Buffer.from(rewardAddress), "hex"))
+  const stakeAddress = await CardanoWasm.RewardAddress.from_address(CardanoWasm.Address.from_bytes(Buffer.from(rewardAddress.slice(2)), "hex"))
     .to_address()
     .to_bech32()
   console.log(stakeAddress);
