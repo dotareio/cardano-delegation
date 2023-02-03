@@ -167,7 +167,6 @@ async function getStakeActivity(stakeAddress:string) {
 }
 
 async function getFeeParams() {
-
   const feeParams = await fetch("https://api.dotare.io/getFeeParams", {
     mode: 'no-cors',
     method: "get",
