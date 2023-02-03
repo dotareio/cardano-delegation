@@ -1,5 +1,4 @@
 import Loader from "./load";
-import { WalletApi } from "./types/globals";
 import { Buffer } from "buffer";
 
 export async function Cardano() {
@@ -9,8 +8,13 @@ export async function Cardano() {
 
 export async function delegationTx(stakePoolHash, walletName) {
   const CardanoWasm = await Cardano();
+  if (!window.cardano[walletName]) {
+    alert("Unable to connect to selected Wallet please make sure that you have the Wallet's browser extension.")
+    return;
+  }
+
   const Wallet = await window.cardano[walletName].enable();
-  
+
   const numerator = CardanoWasm.BigNum.zero();
   const denominator = CardanoWasm.BigNum.zero();
   const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
@@ -19,28 +23,44 @@ export async function delegationTx(stakePoolHash, walletName) {
 
   if (await window.cardano[walletName].isEnabled()) {
     try {
-
       usedAddresses = await Wallet.getUsedAddresses();
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
     } catch (err) {
-      console.error("broken at line 25", err)
-      return
+      alert("Unabled to connect to a specific account inside the selected Wallet please check that you have connected a wallet to your selected Wallet Visor.")
+      console.log("error: 'could not retrieve addresses.' reason:", err);
+      return;
     }
   }
+  let latestBlock;
+  let latestBlockResponse = await fetch("https://api.dotare.io/getLatestBlock");
+  if (latestBlockResponse.ok) {
+    let latestBlockJson = await latestBlockResponse.json();
+    latestBlock = latestBlockJson.height;
+  }
+
+  let isStakeActive;
+  let isStakeActiveResponse = await fetch(`https://api.dotare.io/getStakeInfo/${rewardAddress}`)
+  if (isStakeActiveResponse.ok) {
+    let isStakeActiveJson = await isStakeActiveResponse.json();
+    isStakeActive = isStakeActiveJson.active;
+  }
+
+  const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = await fetch("https://api.dotare.io/getFeeParams").then(x => x.json())
+  console.log("latest block:", latestBlock, "stake active?", isStakeActive)
 
   const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
-    .coins_per_utxo_byte(CardanoWasm.BigNum.from_str("4310"))
+    .coins_per_utxo_byte(CardanoWasm.BigNum.from_str(coins_per_utxo_size))
     .fee_algo(
       CardanoWasm.LinearFee.new(
-        CardanoWasm.BigNum.from_str("44"),
-        CardanoWasm.BigNum.from_str("155381")
+        CardanoWasm.BigNum.from_str(min_fee_a.toString()),
+        CardanoWasm.BigNum.from_str(min_fee_b.toString())
       )
     )
-    .key_deposit(CardanoWasm.BigNum.from_str("2000000"))
-    .pool_deposit(CardanoWasm.BigNum.from_str("500000000"))
-    .max_tx_size(16384)
-    .max_value_size(5000)
-    .ex_unit_prices(CardanoWasm.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero))
+    .key_deposit(CardanoWasm.BigNum.from_str(key_deposit))
+    .pool_deposit(CardanoWasm.BigNum.from_str(pool_deposit))
+    .max_tx_size(max_tx_size)
+    .max_value_size(Number(max_val_size))
+    .ex_unit_prices(CardanoWasm.ExUnitPrices.new(CardanoWasm.UnitInterval.from_json(price_mem), CardanoWasm.UnitInterval.from_json(price_step)))
     .prefer_pure_change(true)
     .build();
 
@@ -48,7 +68,8 @@ export async function delegationTx(stakePoolHash, walletName) {
 
   const certs = CardanoWasm.Certificates.new()
 
-  certs.add(
+  if (!isStakeActive) {
+    certs.add(
       CardanoWasm.Certificate.new_stake_registration(
         CardanoWasm.StakeRegistration.new(
           CardanoWasm.StakeCredential.from_keyhash(
@@ -61,29 +82,29 @@ export async function delegationTx(stakePoolHash, walletName) {
           )
         )
       )
-  );
-console.log("line 65", certs);
+    );
+  }
 
-    certs.add(
-      CardanoWasm.Certificate.new_stake_delegation(
-        CardanoWasm.StakeDelegation.new(
-          CardanoWasm.StakeCredential.from_keyhash(
-            CardanoWasm.Ed25519KeyHash.from_bytes(
-              Buffer.from(
-                rewardAddress.slice(2),
-                "hex"
-              )
+  certs.add(
+    CardanoWasm.Certificate.new_stake_delegation(
+      CardanoWasm.StakeDelegation.new(
+        CardanoWasm.StakeCredential.from_keyhash(
+          CardanoWasm.Ed25519KeyHash.from_bytes(
+            Buffer.from(
+              rewardAddress.slice(2),
+              "hex"
             )
-          ),
-          CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(stakePoolHash, "hex"))
-        )
+          )
+        ),
+        CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(stakePoolHash, "hex"))
       )
+    )
   );
 
   txBuilder.set_certs(certs);
 
   txBuilder.set_ttl(
-    CardanoWasm.BigNum.from_str((723413 + 10000).toString())
+    CardanoWasm.BigNum.from_str((latestBlock + 10000).toString())
   );
 
   const addressHex = usedAddresses[0];
@@ -97,7 +118,6 @@ console.log("line 65", certs);
 
   const utxoOut = CardanoWasm.TransactionUnspentOutputs.new();
   utxos.map((utxo) => utxoOut.add(utxo));
-console.log("Made it to line 102", address);
 
   txBuilder.add_inputs_from(
     utxoOut,
@@ -107,7 +127,7 @@ console.log("Made it to line 102", address);
   txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
 
   const txBody = txBuilder.build();
-  
+
   const transaction = CardanoWasm.Transaction.new(
     txBuilder.build(),
     CardanoWasm.TransactionWitnessSet.new()
@@ -116,17 +136,14 @@ console.log("Made it to line 102", address);
   const witness = await Wallet.signTx(
     Buffer.from(transaction.to_bytes(), "hex").toString("hex"),
     false
-    )
+  )
   const signedTx = CardanoWasm.Transaction.new(
     txBody,
     CardanoWasm.TransactionWitnessSet.from_bytes(Buffer.from(witness, "hex")),
     undefined
   )
 
-  console.log("usedAddresses: ", usedAddresses);
-  console.log("hex: ", Buffer.from(usedAddresses[0], "hex"));
   console.log("bech32: ", address);
-  
 
   const txHash = await Wallet.submitTx(
     Buffer.from(signedTx.to_bytes()).toString("hex")
