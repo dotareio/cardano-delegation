@@ -43,7 +43,7 @@ export async function delegationTx(stakePoolHash, walletName) {
   const isStakeActive = await getStakeActivity(stakeAddress);
   const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = { min_fee_a: 0, min_fee_b: 0, key_deposit: 0, pool_deposit: 0, max_tx_size: 0, max_val_size: 0, price_mem: 0, price_step: 0, coins_per_utxo_size: "0" }
   const feeParams = getFeeParams();
-  console.log("latest block:", await latestBlock, "stake active?", await isStakeActive, "feeParams: ", feeParams);
+  console.log("latest block:", latestBlock, "stake active?", isStakeActive, "feeParams: ", feeParams);
 
 
 
@@ -154,7 +154,7 @@ export async function delegationTx(stakePoolHash, walletName) {
 };
 
 async function getStakeActivity(stakeAddress:string) {
-  let isStakeActive: boolean;
+  let isStakeActive: any;
   try {
     let response = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
       mode: 'no-cors',
@@ -164,8 +164,9 @@ async function getStakeActivity(stakeAddress:string) {
       }
     })
     if (response.ok) {
-      let isStakeActiveJson = await response.json();
-      isStakeActive = isStakeActiveJson.active;
+      // let isStakeActiveJson = await response.json();
+      // isStakeActive = isStakeActiveJson.active;
+      isStakeActive = await response.json();
     }
     return isStakeActive;
   } catch (error) {
@@ -193,7 +194,7 @@ async function getFeeParams() {
 }
 
 async function getLatestBlock() {
-  let latestBlock;
+  let latestBlock: any;
   let latestBlockResponse = await fetch("https://api.dotare.io/getLatestBlock", {
     mode: 'no-cors',
     method: "get",
@@ -202,8 +203,8 @@ async function getLatestBlock() {
     }
   });
   if (latestBlockResponse.ok) {
-    let latestBlockJson = await latestBlockResponse.json();
-    latestBlock = await latestBlockJson.height;
+    latestBlock = await latestBlockResponse.json();
+    // latestBlock = await latestBlockJson.height;
   }
   return latestBlock;
 }
