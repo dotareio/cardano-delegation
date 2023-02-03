@@ -58,7 +58,7 @@ export async function delegationTx(stakePoolHash, walletName) {
     .pool_deposit(CardanoWasm.BigNum.from_str(pool_deposit))
     .max_tx_size(max_tx_size)
     .max_value_size(Number(max_val_size))
-    .ex_unit_prices(CardanoWasm.ExUnitPrices.new(CardanoWasm.UnitInterval.from_json(price_mem), CardanoWasm.UnitInterval.from_json(price_step)))
+    .ex_unit_prices(CardanoWasm.ExUnitPrices.new(CardanoWasm.UnitInterval.from_json(JSON.stringify(price_mem)), CardanoWasm.UnitInterval.from_json(JSON.stringify(price_step))))
     .prefer_pure_change(true)
     .build();
 
