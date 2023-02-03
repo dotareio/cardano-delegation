@@ -46,7 +46,7 @@ export async function delegationTx(stakePoolHash, walletName) {
   const feeParams = await getFeeParams()
   const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word } = JSON.parse(feeParams.body)
   
-  console.log("latest block:", JSON.parse(latestBlock.body), "stake active?", isStakeActive.active, "feeParams: ", JSON.parse(feeParams.body));
+  console.log("latest block:", JSON.parse(latestBlock.body), "stake active?", isStakeActive, "feeParams: ", JSON.parse(feeParams.body));
 
   const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
     .coins_per_utxo_word(CardanoWasm.BigNum.from_str(coins_per_utxo_word))
