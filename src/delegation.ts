@@ -41,11 +41,11 @@ export async function delegationTx(stakePoolHash, walletName) {
 
   const latestBlock = await getLatestBlock();
   const latestBlockBody = JSON.parse(latestBlock.body)
-  const latestBLockSlot = latestBlockBody.slot;
+  const latestBLockSlot: number = latestBlockBody.slot;
   const isStakeActive = await getStakeActivity(stakeAddress).then(x => x.active);
   const feeParams = await getFeeParams()
   const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word } = JSON.parse(feeParams.body)
-  
+
   console.log("latest block:", JSON.parse(latestBlock.body), "stake active?", isStakeActive, "feeParams: ", JSON.parse(feeParams.body));
 
   const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
@@ -103,9 +103,6 @@ export async function delegationTx(stakePoolHash, walletName) {
 
   txBuilder.set_certs(certs);
 
-  txBuilder.set_ttl(
-    CardanoWasm.BigNum.from_str((latestBLockSlot + 1000).toString())
-  );
 
   const addressHex = usedAddresses[0];
   const address = CardanoWasm.BaseAddress.from_address(
@@ -123,6 +120,8 @@ export async function delegationTx(stakePoolHash, walletName) {
     utxoOut,
     0
   );
+
+  txBuilder.set_ttl(latestBLockSlot + 10);
 
   txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
 
@@ -154,12 +153,12 @@ export async function delegationTx(stakePoolHash, walletName) {
   return ([txHash, address]);
 };
 
-async function getStakeActivity(stakeAddress:string) {
+async function getStakeActivity(stakeAddress: string) {
   const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
-      mode: 'cors',
-      method: "get"
-    })
-    return isStakeActive.json()
+    mode: 'cors',
+    method: "get"
+  })
+  return isStakeActive.json()
 }
 
 async function getFeeParams() {
