@@ -34,23 +34,12 @@ export async function delegationTx(stakePoolHash, walletName) {
       return;
     }
   }
-  let latestBlockResponse = await fetch("https://api.dotare.io/getLatestBlock", {
-    mode: 'no-cors',
-    method: "get",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-  let latestBlock;
-  if (latestBlockResponse.ok) {
-    let latestBlockJson = await latestBlockResponse.json();
-    latestBlock = await latestBlockJson.height;
-  }
 
   const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
   const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
   console.log(stakeAddress, stakeKey);
 
+  const latestBlock = await getLatestBlock();
   const isStakeActive = await getStakeActivity(stakeAddress);
   const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = await getFeeParams();
   console.log("latest block:", await latestBlock, "stake active?", await isStakeActive)
@@ -200,4 +189,20 @@ async function getFeeParams() {
     console.log('feeParams', feeParams);
   }
   return feeParams
+}
+
+async function getLatestBlock() {
+  let latestBlock;
+  let latestBlockResponse = await fetch("https://api.dotare.io/getLatestBlock", {
+    mode: 'no-cors',
+    method: "get",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  if (latestBlockResponse.ok) {
+    let latestBlockJson = await latestBlockResponse.json();
+    latestBlock = await latestBlockJson.height;
+  }
+  return latestBlock;
 }
