@@ -154,8 +154,7 @@ export async function delegationTx(stakePoolHash, walletName) {
 };
 
 async function getStakeActivity(stakeAddress:string) {
-  let isStakeActive: any;
-    fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
+  const isStakeActive = fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
       mode: 'no-cors',
       method: "get",
       headers: {
@@ -163,14 +162,13 @@ async function getStakeActivity(stakeAddress:string) {
       }
     })
     .then(response => response.json())
-    .then(data => isStakeActive = data)
+    .then(data => data)
     return isStakeActive
 }
 
 async function getFeeParams() {
 
-  let feeParams: any;
-  fetch("https://api.dotare.io/getFeeParams", {
+  const feeParams = await fetch("https://api.dotare.io/getFeeParams", {
     mode: 'no-cors',
     method: "get",
     headers: {
@@ -178,13 +176,12 @@ async function getFeeParams() {
     }
   })
   .then(response => response.json())
-  .then(data => feeParams = data)
+  .then(data => data)
   return feeParams
 }
 
 async function getLatestBlock() {
-  let latestBlock: any;
-  fetch("https://api.dotare.io/getLatestBlock", {
+  const latestBlock = await fetch("https://api.dotare.io/getLatestBlock", {
     mode: 'no-cors',
     method: "get",
     headers: {
@@ -192,6 +189,6 @@ async function getLatestBlock() {
     }
   })
   .then(response => response.json())
-  .then(data => latestBlock = data)
+  .then(data => data)
   return latestBlock;
 }
