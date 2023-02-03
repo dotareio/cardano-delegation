@@ -40,6 +40,8 @@ export async function delegationTx(stakePoolHash, walletName) {
   console.log(stakeAddress, stakeKey);
 
   const latestBlock = await getLatestBlock();
+  const latestBlockBody = JSON.parse(latestBlock.body)
+  const latestBLockHeight = latestBlockBody.height;
   const isStakeActive = await getStakeActivity(stakeAddress);
   const feeParams = await getFeeParams()
   const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word } = JSON.parse(feeParams.body)
@@ -102,7 +104,7 @@ export async function delegationTx(stakePoolHash, walletName) {
   txBuilder.set_certs(certs);
 
   txBuilder.set_ttl(
-    CardanoWasm.BigNum.from_str((latestBlock + 60).toString())
+    CardanoWasm.BigNum.from_str((latestBLockHeight + 60).toString())
   );
 
   const addressHex = usedAddresses[0];
