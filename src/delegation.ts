@@ -46,8 +46,8 @@ export async function delegationTx(stakePoolHash, walletName) {
     let latestBlockJson = await latestBlockResponse.json();
     latestBlock = await latestBlockJson.height;
   }
-// CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")
-  const stakeKey = await CardanoWasm.StakeCredential.from_bytes(Buffer.from(rewardAddress.slice(2)), "hex");
+
+  const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
   const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
   console.log(stakeAddress, stakeKey);
   let isStakeActiveResponse = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
