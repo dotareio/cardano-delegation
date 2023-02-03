@@ -6,8 +6,7 @@ class Loader {
     /**
      * @private
     */
-    const CSL = "@emurgo/cardano-serialization-lib-browser"; 
-    this._wasm = await import(CSL);
+    this._wasm = await import("@emurgo/cardano-serialization-lib-browser");
   }
 
   get Cardano() {
