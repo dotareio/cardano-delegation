@@ -7,7 +7,7 @@ export async function Cardano() {
   return Loader.Cardano;
 }
 
-export async function delegationTx(stakePoolHash, walletName) {
+export async function delegationTx(stakePoolId: string, walletName: string) {
   const CardanoWasm = await Cardano();
   if (!window.cardano[walletName]) {
     alert("Unable to connect to selected Wallet please make sure that you have the Wallet's browser extension.")
@@ -96,7 +96,7 @@ export async function delegationTx(stakePoolHash, walletName) {
             )
           )
         ),
-        CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(stakePoolHash, "hex"))
+        CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(stakePoolId, "hex"))
       )
     )
   );

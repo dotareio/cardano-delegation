@@ -1,5 +1,5 @@
 const path = require('path');
-const { experiments } = require('webpack');
+const { experiments, webpack, ContextReplacementPlugin } = require('webpack');
 
 module.exports = {
     entry: './src/index.ts',
@@ -25,6 +25,9 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new ContextReplacementPlugin(/cardano-delegation/)
+    ],
     experiments: {
         asyncWebAssembly: true
     },
@@ -40,5 +43,5 @@ module.exports = {
     stats: {
         errorDetails: true
     },
-    mode: 'development' 
+    mode: 'development'
 }
