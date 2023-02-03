@@ -1,5 +1,6 @@
 import Loader from "./load";
 import { Buffer } from "buffer";
+import * as internal from "stream";
 
 export async function Cardano() {
   await Loader.load();
@@ -20,11 +21,13 @@ export async function delegationTx(stakePoolHash, walletName) {
   const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
   let usedAddresses: string[];
   let rewardAddress: string;
+  let networkId: number;
 
   if (await window.cardano[walletName].isEnabled()) {
     try {
       usedAddresses = await Wallet.getUsedAddresses();
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
+      networkId = await Wallet.getNetworkId();
     } catch (err) {
       alert("Unabled to connect to a specific account inside the selected Wallet please check that you have connected a wallet to your selected Wallet Visor.")
       console.log("error: 'could not retrieve addresses.' reason:", err);
@@ -43,7 +46,8 @@ export async function delegationTx(stakePoolHash, walletName) {
     let latestBlockJson = await latestBlockResponse.json();
     latestBlock = await latestBlockJson.height;
   }
-  const stakeAddress = await CardanoWasm.RewardAddress.from_address(CardanoWasm.Address.from_bytes(Buffer.from(rewardAddress.slice(2)), "hex"))
+  const stakeKey = await CardanoWasm.StakeCredential.from_bytes(Buffer.from(rewardAddress.slice(2)), "hex");
+  const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey)
     .to_address()
     .to_bech32()
   console.log(stakeAddress);
