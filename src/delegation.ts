@@ -169,7 +169,7 @@ async function getStakeActivity(stakeAddress:string) {
     return isStakeActive;
   } catch (error) {
     console.log(error);
-    console.error("Unable to find staking activity, Error: ", error)
+    // console.error("Unable to find staking activity, Error: ", error)
   }
 
 }
