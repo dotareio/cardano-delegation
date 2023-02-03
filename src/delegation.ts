@@ -31,7 +31,6 @@ export async function delegationTx(stakePoolHash, walletName) {
       return;
     }
   }
-  let latestBlock;
   let latestBlockResponse = await fetch("https://api.dotare.io/getLatestBlock", {
             mode: 'no-cors',
             method: "get",
@@ -41,10 +40,9 @@ export async function delegationTx(stakePoolHash, walletName) {
  });
   if (latestBlockResponse.ok) {
     let latestBlockJson = await latestBlockResponse.json();
-    latestBlock = latestBlockJson.height;
+    var latestBlock = latestBlockJson.height;
   }
 
-  let isStakeActive;
   let isStakeActiveResponse = await fetch(`https://api.dotare.io/getStakeInfo/${rewardAddress}`, {
             mode: 'no-cors',
             method: "get",
@@ -54,7 +52,7 @@ export async function delegationTx(stakePoolHash, walletName) {
  })
   if (isStakeActiveResponse.ok) {
     let isStakeActiveJson = await isStakeActiveResponse.json();
-    isStakeActive = isStakeActiveJson.active;
+    var isStakeActive = isStakeActiveJson.active;
   }
   console.log("latest block:", latestBlock, "stake active?", isStakeActive)
   
@@ -65,9 +63,8 @@ export async function delegationTx(stakePoolHash, walletName) {
                  "Content-Type": "application/json"
             }
  })
-  let feeParamsJson;
   if (feeParams.ok) {
-    feeParamsJson = await feeParams.json();
+    var feeParamsJson = await feeParams.json();
   }
   console.log('feeParams', feeParamsJson);
 
