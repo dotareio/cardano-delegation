@@ -41,8 +41,9 @@ export async function delegationTx(stakePoolHash, walletName) {
 
   const latestBlock = await getLatestBlock();
   const isStakeActive = await getStakeActivity(stakeAddress);
-  const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = await getFeeParams();
-  console.log("latest block:", await latestBlock, "stake active?", await isStakeActive)
+  const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = { min_fee_a: 0, min_fee_b: 0, key_deposit: 0, pool_deposit: 0, max_tx_size: 0, max_val_size: 0, price_mem: 0, price_step: 0, coins_per_utxo_size: "0" }
+  const feeParams = getFeeParams();
+  console.log("latest block:", await latestBlock, "stake active?", await isStakeActive, "feeParams: ", feeParams);
 
 
 
