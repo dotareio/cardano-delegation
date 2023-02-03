@@ -155,15 +155,13 @@ export async function delegationTx(stakePoolHash, walletName) {
 
 async function getStakeActivity(stakeAddress:string) {
   const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
-      mode: 'no-cors',
-      method: "get"
+    method: "get"
     })
     return isStakeActive.json()
 }
 
 async function getFeeParams() {
   const feeParams = await fetch("https://api.dotare.io/getFeeParams", {
-    mode: 'no-cors',
     method: "get"
   })
 
@@ -172,7 +170,6 @@ async function getFeeParams() {
 
 async function getLatestBlock() {
   const latestBlock = await fetch("https://api.dotare.io/getLatestBlock", {
-    mode: 'no-cors',
     method: "get"
   })
   return latestBlock.json();
