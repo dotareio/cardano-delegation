@@ -50,32 +50,11 @@ export async function delegationTx(stakePoolHash, walletName) {
   const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
   const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
   console.log(stakeAddress, stakeKey);
-  let isStakeActiveResponse = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
-    mode: 'no-cors',
-    method: "get",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-  if (isStakeActiveResponse.ok) {
-    let isStakeActiveJson = await isStakeActiveResponse.json();
-    var isStakeActive = isStakeActiveJson.active;
-  }
+
+  const isStakeActive = await getStakeActivity(stakeAddress);
+  const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = await getFeeParams();
   console.log("latest block:", await latestBlock, "stake active?", await isStakeActive)
 
-  let feeParams = await fetch("https://api.dotare.io/getFeeParams", {
-    mode: 'no-cors',
-    method: "get",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-  if (feeParams.ok) {
-    var feeParamsJson = await feeParams.json();
-  }
-  console.log('feeParams', feeParamsJson);
-
-  const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = await feeParamsJson;
 
 
   const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
@@ -183,3 +162,42 @@ export async function delegationTx(stakePoolHash, walletName) {
 
   return ([txHash, address]);
 };
+
+async function getStakeActivity(stakeAddress:string) {
+  let isStakeActive: boolean;
+  try {
+    let response = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
+      mode: 'no-cors',
+      method: "get",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    if (response.ok) {
+      let isStakeActiveJson = await response.json();
+      isStakeActive = isStakeActiveJson.active;
+    }
+    return isStakeActive;
+  } catch (error) {
+    console.log(error);
+    console.error("Unable to find staking activity, Error: ", error)
+  }
+
+}
+
+async function getFeeParams() {
+
+  let feeParams: any;
+  let feeParamsResponse = await fetch("https://api.dotare.io/getFeeParams", {
+    mode: 'no-cors',
+    method: "get",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  if (feeParamsResponse.ok) {
+    feeParams = await feeParamsResponse.json();
+    console.log('feeParams', feeParams);
+  }
+  return feeParams
+}
