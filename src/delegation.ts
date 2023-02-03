@@ -121,7 +121,7 @@ export async function delegationTx(stakePoolHash, walletName) {
     0
   );
 
-  txBuilder.set_ttl(latestBLockSlot + 10);
+  txBuilder.set_ttl(latestBLockSlot + 500);
 
   txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
 
