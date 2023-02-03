@@ -43,7 +43,9 @@ export async function delegationTx(stakePoolHash, walletName) {
     let latestBlockJson = await latestBlockResponse.json();
     latestBlock = await latestBlockJson.height;
   }
-  const stakeAddress = CardanoWasm.RewardAddress.from_address(CardanoWasm.Address.from_bytes(Buffer.from(rewardAddress), "hex"));
+  const stakeAddress = await CardanoWasm.RewardAddress.from_address(CardanoWasm.Address.from_bytes(Buffer.from(rewardAddress), "hex"))
+    .to_address()
+    .to_bech32()
   console.log(stakeAddress);
   let isStakeActiveResponse = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
     mode: 'no-cors',
