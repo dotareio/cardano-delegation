@@ -42,7 +42,7 @@ export async function delegationTx(stakePoolHash, walletName) {
   const latestBlock = await getLatestBlock();
   const isStakeActive = await getStakeActivity(stakeAddress);
   const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = { min_fee_a: 0, min_fee_b: 0, key_deposit: 0, pool_deposit: 0, max_tx_size: 0, max_val_size: 0, price_mem: 0, price_step: 0, coins_per_utxo_size: "0" }
-  const feeParams = getFeeParams();
+  const feeParams = await getFeeParams();
   console.log("latest block:", latestBlock, "stake active?", isStakeActive, "feeParams: ", feeParams);
 
 
@@ -154,40 +154,26 @@ export async function delegationTx(stakePoolHash, walletName) {
 };
 
 async function getStakeActivity(stakeAddress:string) {
-  const isStakeActive = fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
+  const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
       mode: 'no-cors',
-      method: "get",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      method: "get"
     })
-    .then(response => response.json())
-    .then(data => data)
-    return isStakeActive
+    return isStakeActive.json()
 }
 
 async function getFeeParams() {
   const feeParams = await fetch("https://api.dotare.io/getFeeParams", {
     mode: 'no-cors',
-    method: "get",
-    headers: {
-      "Content-Type": "application/json"
-    }
+    method: "get"
   })
-  .then(response => response.json())
-  .then(data => data)
-  return feeParams
+
+  return feeParams.json()
 }
 
 async function getLatestBlock() {
   const latestBlock = await fetch("https://api.dotare.io/getLatestBlock", {
     mode: 'no-cors',
-    method: "get",
-    headers: {
-      "Content-Type": "application/json"
-    }
+    method: "get"
   })
-  .then(response => response.json())
-  .then(data => data)
-  return latestBlock;
+  return latestBlock.json();
 }
