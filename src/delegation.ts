@@ -155,56 +155,43 @@ export async function delegationTx(stakePoolHash, walletName) {
 
 async function getStakeActivity(stakeAddress:string) {
   let isStakeActive: any;
-  try {
-    let response = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
+    fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
       mode: 'no-cors',
       method: "get",
       headers: {
         "Content-Type": "application/json"
       }
     })
-    if (response.ok) {
-      // let isStakeActiveJson = await response.json();
-      // isStakeActive = isStakeActiveJson.active;
-      isStakeActive = await response.json();
-    }
-    return isStakeActive;
-  } catch (error) {
-    console.log(error);
-    // console.error("Unable to find staking activity, Error: ", error)
-  }
-
+    .then(response => response.json())
+    .then(data => isStakeActive = data)
+    return isStakeActive
 }
 
 async function getFeeParams() {
 
   let feeParams: any;
-  let feeParamsResponse = await fetch("https://api.dotare.io/getFeeParams", {
+  fetch("https://api.dotare.io/getFeeParams", {
     mode: 'no-cors',
     method: "get",
     headers: {
       "Content-Type": "application/json"
     }
   })
-  if (feeParamsResponse.ok) {
-    feeParams = await feeParamsResponse.json();
-    console.log('feeParams', feeParams);
-  }
+  .then(response => response.json())
+  .then(data => feeParams = data)
   return feeParams
 }
 
 async function getLatestBlock() {
   let latestBlock: any;
-  let latestBlockResponse = await fetch("https://api.dotare.io/getLatestBlock", {
+  fetch("https://api.dotare.io/getLatestBlock", {
     mode: 'no-cors',
     method: "get",
     headers: {
       "Content-Type": "application/json"
     }
-  });
-  if (latestBlockResponse.ok) {
-    latestBlock = await latestBlockResponse.json();
-    // latestBlock = await latestBlockJson.height;
-  }
+  })
+  .then(response => response.json())
+  .then(data => latestBlock = data)
   return latestBlock;
 }
