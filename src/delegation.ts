@@ -56,7 +56,8 @@ export async function delegationTx(stakePoolHash, walletName) {
     let isStakeActiveJson = await isStakeActiveResponse.json();
     isStakeActive = isStakeActiveJson.active;
   }
-
+  console.log("latest block:", latestBlock, "stake active?", isStakeActive)
+  
   let feeParams =  await fetch("https://api.dotare.io/getFeeParams", {
             mode: 'no-cors',
             method: "get",
@@ -68,9 +69,10 @@ export async function delegationTx(stakePoolHash, walletName) {
   if (feeParams.ok) {
     feeParamsJson = await feeParams.json();
   }
+  console.log('feeParams', feeParamsJson);
+
   const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_size } = await feeParamsJson;
 
-  console.log("latest block:", latestBlock, "stake active?", isStakeActive)
 
   const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
     .coins_per_utxo_byte(CardanoWasm.BigNum.from_str(coins_per_utxo_size))
