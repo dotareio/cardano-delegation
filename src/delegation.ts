@@ -115,13 +115,13 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     
     const utxos = (await Wallet.getUtxos()).map(utxo => CardanoWasm.TransactionUnspentOutput.from_bytes(Buffer.from(utxo, "hex")))
     
-    const utxoOut = CardanoWasm.TransactionUnspentOutputs.new();
+    // const utxoOut = CardanoWasm.TransactionUnspentOutputs.new();
     utxos.map((utxo) => txBuilder.add_reference_input(utxo));
     
-    txBuilder.add_inputs_from(
-      utxoOut,
-      0
-  );
+  //   txBuilder.add_inputs_from(
+  //     utxoOut,
+  //     0
+  // );
 
   txBuilder.set_ttl(latestBLockSlot + 500);
 
