@@ -127,7 +127,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
 
   // txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
 
-  txBuilder.select_utxos(0);
+  txBuilder.select_utxos(2);
   
   const txBody = txBuilder.build();
 
