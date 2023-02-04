@@ -24,16 +24,10 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     let networkId: number;
 
     if (await window.cardano[walletName].isEnabled()) {
-    try {
       usedAddresses = await Wallet.getUsedAddresses();
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
       networkId = await Wallet.getNetworkId();
-    } catch (err) {
-      alert("Unabled to connect to a specific account inside the selected Wallet please check that you have connected a wallet to your selected Browser Wallet.")
-      console.log("error: 'could not retrieve addresses.' reason:", err);
-      return;
     }
-  }
 
   const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
   const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
@@ -127,9 +121,9 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
 
   // txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
 
-  txBuilder.select_utxos(2);
+  txBuilder.select_utxos(0);
   
-  const txBody = txBuilder.build();
+  const txBody = txBuilder.build(0, CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
 
   txBody.set_certs(certs)
   
