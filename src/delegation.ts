@@ -44,7 +44,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
   const latestBLockSlot: number = latestBlockBody.slot;
   const isStakeActive = await getStakeActivity(stakeAddress).then(x => x.active);
   const feeParams = await getFeeParams()
-  const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word, collateral_percent } = JSON.parse(feeParams.body)
+  const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word, collateral_percent, max_collateral_inputs } = JSON.parse(feeParams.body)
   
   console.log("latest block:", JSON.parse(latestBlock.body), "stake active?", isStakeActive, "feeParams: ", JSON.parse(feeParams.body));
   
@@ -62,6 +62,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     .max_value_size(Number(max_val_size))
     .ex_unit_prices(CardanoWasm.ExUnitPrices.new(UnitIntervalZero, UnitIntervalZero))
     .collateral_percentage(Number(collateral_percent))
+    .max_collateral_inputs(Number(max_collateral_inputs))
     .prefer_pure_change(true)
     .build();
     
