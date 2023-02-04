@@ -71,7 +71,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     const certs = CardanoWasm.Certificates.new()
     
     if (!isStakeActive) {
-      txBuilder.add_cert(CardanoWasm.SingleCertificateBuilder.skip_witness());
+      txBuilder.add_cert(CardanoWasm.SingleCertificateBuilder.skip_witness);
       certs.add(
         CardanoWasm.Certificate.new_stake_registration(
           CardanoWasm.StakeRegistration.new(
