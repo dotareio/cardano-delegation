@@ -123,7 +123,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
   //     0
   // );
 
-  txBuilder.set_ttl(CardanoWasm.BigNum.from_str(latestBLockSlot + 500));
+  txBuilder.set_ttl(CardanoWasm.BigNum.from_str((latestBLockSlot + 500).toString()));
 
   txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
   
