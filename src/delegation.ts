@@ -1,6 +1,5 @@
 import Loader from "./load";
 import { Buffer } from "buffer";
-import * as internal from "stream";
 
 export async function Cardano() {
   await Loader.load();

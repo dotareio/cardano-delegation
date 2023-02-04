@@ -8,9 +8,9 @@
     "dist"
   ],
   "scripts": {
-    "start": "npx http-server --cors",
+    "build-dev": "webpack --mode development",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "build": "webpack"
+    "build-prod": "webpack --mode production"
   },
   "repository": {
     "type": "git",

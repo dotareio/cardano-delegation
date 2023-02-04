@@ -6,7 +6,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.ts?$/,
                 use: [
                     {
                         loader: 'ts-loader',
@@ -40,8 +40,7 @@ module.exports = {
         library: 'cardano-delegation',
         libraryTarget: 'umd',
     },
-    stats: {
-        errorDetails: true
-    },
-    mode: 'development'
+    optimization: {
+        minimize: true
+    }
 }
