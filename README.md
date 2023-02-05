@@ -1,0 +1,1 @@
+![](https://github.com/dotareio/public/blob/main/cardano-delegation-demo.gif)
