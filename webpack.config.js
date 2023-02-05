@@ -1,5 +1,4 @@
 const path = require('path');
-const { experiments, webpack, ContextReplacementPlugin } = require('webpack');
 
 module.exports = {
     entry: './src/index.ts',
@@ -25,14 +24,11 @@ module.exports = {
             },
         ],
     },
-    plugins: [
-        new ContextReplacementPlugin(/cardano-delegation/)
-    ],
     experiments: {
         asyncWebAssembly: true
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.ts', '.js'],
     },
     output: {
         filename: 'bundle.js',
