@@ -27,19 +27,28 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
       networkId = await Wallet.getNetworkId();
     }
-
+    
     const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
     const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
+    const balanceHex = await Wallet.getBalance();
     console.log(stakeAddress, stakeKey);
-
-    const latestBlock = await getLatestBlock();
-    const latestBlockBody = JSON.parse(latestBlock.body)
-    const latestBLockSlot: number = latestBlockBody.slot;
-    const isStakeActive = await getStakeActivity(stakeAddress).then(x => x.active);
-    const feeParams = await getFeeParams()
-    const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word, collateral_percent, max_collateral_inputs } = JSON.parse(feeParams.body)
-
-    console.log("latest block:", JSON.parse(latestBlock.body), "stake active?", isStakeActive, "feeParams: ", JSON.parse(feeParams.body));
+    
+    let stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
+    let network: string = stakeInfo.network;
+    let isStakeActive = stakeInfo.active;
+    const controlledAmount = stakeInfo.controlled_amount;
+    const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
+    if (balance.coin !== controlledAmount && network === "preview") {
+      networkId = 2;
+      stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
+    }
+    network = stakeInfo.network;
+    const latestBlock = await getLatestBlock(network).then(x => x.slot);
+    const feeParams = await getFeeParams(network)
+    const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word, collateral_percent, max_collateral_inputs } = feeParams;
+    
+    console.log("latest block:", latestBlock, "stake active?", isStakeActive, "feeParams: ", feeParams);
+    console.log("network name: ", network, "active: ", isStakeActive);
 
     const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
       .coins_per_utxo_word(CardanoWasm.BigNum.from_str(coins_per_utxo_word))
@@ -116,7 +125,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     );
 
 
-    txBuilder.set_ttl(latestBLockSlot + 500);
+    txBuilder.set_ttl(latestBlock + 500);
 
     txBuilder.add_change_if_needed(CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex")));
 
@@ -153,15 +162,15 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
 };
 
 async function getStakeActivity(stakeAddress: string, networkId: number = 0) {
-  const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
+  const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}/${networkId}`, {
     mode: 'cors',
     method: "get"
   })
   return isStakeActive.json()
 }
 
-async function getFeeParams() {
-  const feeParams = await fetch("https://api.dotare.io/getFeeParams", {
+async function getFeeParams(network: string) {
+  const feeParams = await fetch(`https://api.dotare.io/getFeeParams/${network}`, {
     mode: 'cors',
     method: "get"
   })
@@ -169,8 +178,8 @@ async function getFeeParams() {
   return feeParams.json()
 }
 
-async function getLatestBlock() {
-  const latestBlock = await fetch("https://api.dotare.io/getLatestBlock", {
+async function getLatestBlock(network: string) {
+  const latestBlock = await fetch(`https://api.dotare.io/getLatestBlock/${network}`, {
     mode: 'cors',
     method: "get",
   })
