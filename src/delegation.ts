@@ -152,7 +152,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
   }
 };
 
-async function getStakeActivity(stakeAddress: string) {
+async function getStakeActivity(stakeAddress: string, networkId: number = 0) {
   const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}`, {
     mode: 'cors',
     method: "get"
