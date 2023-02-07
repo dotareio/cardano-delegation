@@ -12,4 +12,8 @@ experiments: {
 How to load wasm into create-react-app:
 https://stackoverflow.com/a/61722010
 
+---
+Ways to support:
+https://fiso.teddyswap.org/ Ticker DOTAR
 
+https://github.com/dotareio/cardano-delegation/issues/new/choose
