@@ -14,6 +14,11 @@ https://stackoverflow.com/a/61722010
 
 ---
 Ways to support:
+<div style="background-color:#4682B4">
+ <img src="https://fiso.teddyswap.org/teddy-logo.svg">
+</div>
+
 https://fiso.teddyswap.org/ Ticker DOTAR
+<br />
 
 https://github.com/dotareio/cardano-delegation/issues/new/choose
