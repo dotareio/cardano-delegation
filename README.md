@@ -50,5 +50,3 @@ Ways to support:
 https://fiso.teddyswap.org Ticker DOTAR
 <br />
 https://github.com/dotareio/cardano-delegation/issues/new/choose
-
-Dotare cardano-delegation
