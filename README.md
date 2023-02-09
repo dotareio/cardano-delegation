@@ -4,12 +4,17 @@
 Please update to newest verison [![npm version](https://badge.fury.io/js/@dotare%2Fcardano-delegation.svg)](https://badge.fury.io/js/@dotare%2Fcardano-delegation)
 ![](https://github.com/dotareio/public/blob/main/cardano-delegation-demo.gif)
 
+###### install
+```
+npm i @dotare/cardano-delegation
+```
+
 ```
 import React from 'react';
 import { delegationTx } from '@dotare/cardano-delegation';
 function App() {
-    return (
-        <div>                                                 //Pool ID hash                            // window.cardano.*wallet name*
+    return (                                                                                                 //Browser console to find names
+        <div>                                                 //Pool ID hash                            // window.cardano.*browser wallet name*
             <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami') }}>nami</button>
             <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'yoroi') }}>yoroi</button>
             <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'typhoncip30') }}>typhon</button>
