@@ -35,7 +35,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
     const balanceHex = await Wallet.getBalance();
     const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
-    console.log(stakeAddress, stakeKey);
+    console.log(stakeAddress);
 
     var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
     var network: string = stakeInfo.network;
