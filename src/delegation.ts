@@ -23,7 +23,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     let networkId: number;
     let latestBlock: any;
     let feeParams: any;
-    var isStakeActive: boolean;
+    let isStakeActive: boolean;
 
     if (await window.cardano[walletName].isEnabled()) {
       usedAddresses = await Wallet.getUsedAddresses();
@@ -37,8 +37,8 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
     console.log(stakeAddress);
 
-    var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
-    var network: string = stakeInfo.network;
+    let stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
+    let network: string = stakeInfo.network;
     const controlledAmount = stakeInfo.controlled_amount;
     if (balance.coin !== controlledAmount) {
       networkId = 2;
@@ -56,7 +56,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word, collateral_percent, max_collateral_inputs } = feeParams;
 
     console.log("latest block:", latestBlock, "stake active?", isStakeActive, "feeParams: ", feeParams);
-    console.log("network name: ", network, "active: ", isStakeActive, "networkid: ", networkId);
+    console.log("network name: ", network, "networkid: ", networkId);
 
     const txBuilderConfig = CardanoWasm.TransactionBuilderConfigBuilder.new()
       .coins_per_utxo_word(CardanoWasm.BigNum.from_str(coins_per_utxo_word))

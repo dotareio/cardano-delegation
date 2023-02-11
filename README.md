@@ -33,7 +33,7 @@ experiments: {
     asyncWebAssembly: true,
 },
 ```
-**If you don't have access due to framework library:**
+**If you don't have access to webpack.config due to framework library:**
 
 How to load wasm into create-react-app:
 https://stackoverflow.com/a/61722010
