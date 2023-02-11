@@ -8,7 +8,7 @@
                                 Pool ID Hash,                         WalletName, NetworkId: 0 = Preview, 1 = Mainnet, 2 = Pre-Prod
 delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami', 0)
 ```
-#####default will be mainnet: 1
+##### default will be mainnet: 1
 ###### install
 ```
 npm i @dotare/cardano-delegation
@@ -45,6 +45,10 @@ https://stackoverflow.com/a/61722010
 
 How to load wasm into Laravel with mix:
 https://laravel-mix.com/docs/6.0/quick-webpack-configuration
+
+**if you are getting CORS error on localhost with chromium browser try this extention**
+
+https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino
 
 ---
 Ways to support:
