@@ -48,6 +48,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
       latestBlock = await getLatestBlock(network).then(x => x.slot);
       feeParams = await getFeeParams(network)
     } else {
+      network = stakeInfo.network;
       isStakeActive = stakeInfo.active;
       latestBlock = await getLatestBlock(network).then(x => x.slot);
       feeParams = await getFeeParams(network)
