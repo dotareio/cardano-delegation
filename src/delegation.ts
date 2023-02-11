@@ -23,7 +23,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     let networkId: number;
     let latestBlock: any;
     let feeParams: any;
-    let isStakeActive: boolean;
+    var isStakeActive: boolean;
 
     if (await window.cardano[walletName].isEnabled()) {
       usedAddresses = await Wallet.getUsedAddresses();
@@ -37,8 +37,8 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
     console.log(stakeAddress);
 
-    let stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
-    let network: string = stakeInfo.network;
+    var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
+    var network: string = stakeInfo.network;
     const controlledAmount = stakeInfo.controlled_amount;
     if (balance.coin !== controlledAmount) {
       networkId = 2;
