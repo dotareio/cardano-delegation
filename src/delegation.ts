@@ -28,9 +28,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     if (await window.cardano[walletName].isEnabled()) {
       usedAddresses = await Wallet.getUsedAddresses();
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
-      networkId = await Wallet.getNetworkId();
     }
-
     const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
     const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
     const balanceHex = await Wallet.getBalance();
@@ -40,19 +38,10 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
     var network: string = stakeInfo.network;
     const controlledAmount = stakeInfo.controlled_amount;
-    if (balance.coin != controlledAmount && networkId != 1) {
-      networkId = 2;
-      network = "preprod"
-      const newStakeInfo = await getStakeActivity(stakeAddress, 2).then(x => x);
-      isStakeActive = await newStakeInfo.active;
-      latestBlock = await getLatestBlock(network).then(x => x.slot);
-      feeParams = await getFeeParams(network)
-    } else {
-      network = stakeInfo.network;
-      isStakeActive = stakeInfo.active;
-      latestBlock = await getLatestBlock(network).then(x => x.slot);
-      feeParams = await getFeeParams(network)
-    }
+    network = stakeInfo.network;
+    isStakeActive = stakeInfo.active;
+    latestBlock = await getLatestBlock(network).then(x => x.slot);
+    feeParams = await getFeeParams(network)
 
     const { min_fee_a, min_fee_b, key_deposit, pool_deposit, max_tx_size, max_val_size, price_mem, price_step, coins_per_utxo_word, collateral_percent, max_collateral_inputs } = feeParams;
 
@@ -170,7 +159,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
   }
 };
 
-async function getStakeActivity(stakeAddress: string, networkId: number = 0) {
+async function getStakeActivity(stakeAddress: string, networkId: number) {
   const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}/${networkId}`, {
     mode: 'cors',
     method: "get"

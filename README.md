@@ -3,7 +3,12 @@
 ![](https://img.shields.io/badge/Mainnet-Up-brightgreen)
 
 ![](https://github.com/dotareio/public/blob/main/cardano-delegation-demo.gif)
-
+##### New changes you will now be able to select network id in parameters
+```
+                                Pool ID Hash,                         WalletName, NetworkId: 0 = Preview, 1 = Mainnet, 2 = Pre-Prod
+delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami', 0)
+```
+#####default will be mainnet: 1
 ###### install
 ```
 npm i @dotare/cardano-delegation
@@ -15,12 +20,12 @@ import { delegationTx } from '@dotare/cardano-delegation';
 function App() {
     return (                                                                                                 //Browser console to find names
         <div>                                                 //Pool ID hash                            // window.cardano.*browser wallet name*
-            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami') }}>nami</button>
-            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'eternl') }}>eternl</button>
-            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'yoroi') }}>yoroi</button>
-            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'typhoncip30') }}>typhon</button>
-            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'gerowallet') }}>gerowallet</button>
-            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'flint') }}>flint</button>
+            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami', 0) }}>nami</button>
+            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'eternl', 0) }}>eternl</button>
+            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'yoroi', 0) }}>yoroi</button>
+            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'typhoncip30', 0) }}>typhon</button>
+            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'gerowallet', 0) }}>gerowallet</button>
+            <button onClick={() => { delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'flint', 0) }}>flint</button>
         </div>
     );
 }
