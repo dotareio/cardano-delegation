@@ -6,7 +6,7 @@ export async function Cardano() {
   return Loader.Cardano;
 }
 
-export async function delegationTx(stakePoolId: string, walletName: string, chosenNtworkId: number = 1) {
+export async function delegationTx(stakePoolId: string, walletName: string, chosenNetworkId: number = 1) {
   const CardanoWasm = await Cardano();
   if (!window.cardano[walletName]) {
     alert("Unable to connect to selected Wallet please make sure that you have the Wallet's browser extension.")
@@ -20,7 +20,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
     let usedAddresses: string[];
     let rewardAddress: string;
-    let networkId: number = chosenNtworkId;
+    let networkId: number = chosenNetworkId;
     let latestBlock: any;
     let feeParams: any;
     let isStakeActive: boolean;
