@@ -40,7 +40,7 @@ export async function delegationTx(stakePoolId: string, walletName: string) {
     let stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
     let network: string = stakeInfo.network;
     const controlledAmount = stakeInfo.controlled_amount;
-    if (balance.coin !== controlledAmount) {
+    if (balance.coin !== controlledAmount && networkId !== 1) {
       networkId = 2;
       network = "preprod"
       const newStakeInfo = await getStakeActivity(stakeAddress, 2).then(x => x);
