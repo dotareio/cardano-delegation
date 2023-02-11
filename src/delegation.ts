@@ -31,18 +31,18 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
       walletNetworkId = await Wallet.getNetworkId(); 
     }
-    if (walletNetworkId !== networkId && networkId !== 2) return alert("Browser Wallet Network does not match request for staking. Please check network")
-    const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
-    const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
-    const balanceHex = await Wallet.getBalance();
-    const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
+    if (walletNetworkId === 0 && networkId === 2) throw new Error("Wallet network does not match staking target network.")
+      const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
+      const stakeAddress = CardanoWasm.RewardAddress.new(walletNetworkId, stakeKey).to_address().to_bech32()
+      const balanceHex = await Wallet.getBalance();
+      const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
     console.log(stakeAddress);
 
     var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
     var network: string = stakeInfo.network;
     const controlledAmount = stakeInfo.controlled_amount;
-    network = stakeInfo.network;
     isStakeActive = stakeInfo.active;
+    if (!network) throw new Error("Could not find stake address inside network, may be new with no funds.")
     latestBlock = await getLatestBlock(network).then(x => x.slot);
     feeParams = await getFeeParams(network)
 

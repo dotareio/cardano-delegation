@@ -3,9 +3,9 @@
 ![](https://img.shields.io/badge/Mainnet-Up-brightgreen)
 
 ![](https://github.com/dotareio/public/blob/main/cardano-delegation-demo.gif)
-##### New changes you will now be able to select network id in parameters
+##### New changes you will now be able to select network id in parameters (Preview: 0, Mainnet: 1, Pre-Prod: 2)
 ```
-                                Pool ID Hash,                         WalletName, NetworkId: 0 = Preview, 1 = Mainnet, 2 = Pre-Prod
+                                Pool ID Hash, WalletName, NetworkId: (Preview: 0, Mainnet: 1, Pre-Prod: 2)
 delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami', 0)
 ```
 ##### default will be mainnet: 1
