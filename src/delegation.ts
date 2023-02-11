@@ -23,7 +23,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     let networkId: number = chosenNetworkId;
     let latestBlock: any;
     let feeParams: any;
-    let isStakeActive: boolean;
+    var isStakeActive: boolean;
 
     if (await window.cardano[walletName].isEnabled()) {
       usedAddresses = await Wallet.getUsedAddresses();
