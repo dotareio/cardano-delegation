@@ -20,6 +20,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     const UnitIntervalZero = CardanoWasm.UnitInterval.new(numerator, denominator);
     let usedAddresses: string[];
     let rewardAddress: string;
+    let walletNetworkId: number;
     let networkId: number = chosenNetworkId;
     let latestBlock: any;
     let feeParams: any;
@@ -28,7 +29,9 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     if (await window.cardano[walletName].isEnabled()) {
       usedAddresses = await Wallet.getUsedAddresses();
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
+      walletNetworkId = await Wallet.getNetworkId(); 
     }
+    if (walletNetworkId !== networkId && networkId !== 2) return alert("Browser Wallet Network does not match request for staking. Please check network")
     const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
     const stakeAddress = CardanoWasm.RewardAddress.new(networkId, stakeKey).to_address().to_bech32()
     const balanceHex = await Wallet.getBalance();
