@@ -8,7 +8,7 @@ export async function Cardano() {
 
 export async function delegationTx(stakePoolId: string, walletName: string, chosenNetworkId: number = 1) {
   const CardanoWasm = await Cardano();
-  if (!window.cardano[walletName]) {
+  if (!window.cardano?.[walletName]) {
     alert("Unable to connect to selected Wallet please make sure that you have the Wallet's browser extension.")
     return;
   }
