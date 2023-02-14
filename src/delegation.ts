@@ -173,7 +173,8 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
 async function getStakeActivity(stakeAddress: string, networkId: number) {
   const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}/${networkId}`, {
     mode: 'cors',
-    method: "get"
+    method: "get",
+    headers: { 'Content-Type': 'application/json' }
   })
   return isStakeActive.json()
 }
@@ -181,7 +182,8 @@ async function getStakeActivity(stakeAddress: string, networkId: number) {
 async function getFeeParams(network: string) {
   const feeParams = await fetch(`https://api.dotare.io/getFeeParams/${network}`, {
     mode: 'cors',
-    method: "get"
+    method: "get",
+    headers: { 'Content-Type': 'application/json' }
   })
 
   return feeParams.json()
@@ -191,6 +193,7 @@ async function getLatestBlock(network: string) {
   const latestBlock = await fetch(`https://api.dotare.io/getLatestBlock/${network}`, {
     mode: 'cors',
     method: "get",
+    headers: { 'Content-Type': 'application/json' }
   })
   return latestBlock.json();
 }
