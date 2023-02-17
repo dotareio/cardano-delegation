@@ -166,30 +166,31 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
 
     return ([txHash, address]);
   } catch (error) {
-    alert(`could not connect wallet error: ${error}`)
+    alert(`could not connect wallet due to: ${error}`)
   }
 };
 
-async function getStakeActivity(stakeAddress: string, networkId: number) {
+export async function getStakeActivity(stakeAddress: string, networkId: number) {
   const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}/${networkId}`, {
     mode: 'cors',
     method: "get",
     headers: { 'Content-Type': 'application/json' }
   })
+  .then((response) => {return response})
+  .catch((error) => {throw new Error("Address has no utxos.")})
   return isStakeActive.json()
 }
 
-async function getFeeParams(network: string) {
+export async function getFeeParams(network: string) {
   const feeParams = await fetch(`https://api.dotare.io/getFeeParams/${network}`, {
     mode: 'cors',
     method: "get",
     headers: { 'Content-Type': 'application/json' }
   })
-
   return feeParams.json()
 }
 
-async function getLatestBlock(network: string) {
+export async function getLatestBlock(network: string) {
   const latestBlock = await fetch(`https://api.dotare.io/getLatestBlock/${network}`, {
     mode: 'cors',
     method: "get",
