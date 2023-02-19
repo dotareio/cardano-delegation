@@ -31,6 +31,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
       walletNetworkId = await Wallet.getNetworkId();
     }
+    if (walletName === "eternl") alert("Loading Eternl wallet, please wait.");
     const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
     const stakeAddress = CardanoWasm.RewardAddress.new(walletNetworkId, stakeKey).to_address().to_bech32()
     const balanceHex = await Wallet.getBalance();
@@ -44,11 +45,6 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     if (!network) throw new Error("Could not find stake address inside network, may also be new with no funds.");
 
     if (walletNetworkId !== networkId && networkId !== 2) throw new Error("Wallet network does not match staking target network.");
-    console.log(balance.coin.toString(), controlledAmount);
-
-    if (balance.coin.toString() !== controlledAmount) {
-      throw new Error("Wallet network does not match staking target network. Please also check If you have any reward withdrawals available");
-    }
 
     isStakeActive = stakeInfo.active;
     latestBlock = await getLatestBlock(network).then(x => x.slot);
