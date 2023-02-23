@@ -6,7 +6,7 @@ class Loader {
     /**
      * @private
     */
-    this._wasm = await import("@emurgo/cardano-serialization-lib-browser");
+    this._wasm = await import("@dcspark/cardano-multiplatform-lib-browser");
   }
 
   get Cardano() {
