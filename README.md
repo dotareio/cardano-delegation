@@ -52,7 +52,8 @@ https://laravel-mix.com/docs/6.0/quick-webpack-configuration
 
 *Delegate:*
 https://www.dotare.io/stake-pool/ (proof this package works on wordpress.)
-![Royal Pool](https://github.com/dotareio/public/blob/main/asset19skal0agalysqpgfx63gswkpzc3hs24h9g9pg0.png) ![CCCC Pool](https://github.com/dotareio/public/blob/main/asset1fy52surzfc4ezrxaynfqqrnk4uz3cha25vcelt.png)<img src="https://teddyswap.org/assets/img/services/farming.png" width="50">
+
+<img src="https://github.com/dotareio/public/blob/main/asset19skal0agalysqpgfx63gswkpzc3hs24h9g9pg0.png" width="50" alt="Royal Pool"> <img src="https://github.com/dotareio/public/blob/main/asset1fy52surzfc4ezrxaynfqqrnk4uz3cha25vcelt.png" width="50" alt="CCCC Pool"> <img src="https://teddyswap.org/assets/img/services/farming.png" width="50" alt="Teddy FISO Pool">
 
 *Post Issues:*
 https://github.com/dotareio/cardano-delegation/issues/new/choose 
