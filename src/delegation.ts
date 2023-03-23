@@ -25,20 +25,31 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     let latestBlock: any;
     let feeParams: any;
     var isStakeActive: boolean;
+    const bech32stakePoolId: string = await CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(stakePoolId, "hex")).to_bech32("pool");
 
     if (await window.cardano[walletName].isEnabled()) {
       usedAddresses = await Wallet.getUsedAddresses();
       rewardAddress = await Wallet.getRewardAddresses().then(x => x[0]);
       walletNetworkId = await Wallet.getNetworkId();
     }
-    if (walletName === "eternl") alert("Loading Eternl wallet, please wait.");
-    const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(CardanoWasm.Ed25519KeyHash.from_bytes(Buffer.from(rewardAddress.slice(2), "hex")));
-    const stakeAddress = CardanoWasm.RewardAddress.new(walletNetworkId, stakeKey).to_address().to_bech32()
+
+    const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(
+      CardanoWasm.Ed25519KeyHash.from_bytes(
+        Buffer.from(rewardAddress.slice(2), "hex")
+      )
+    );
+    const stakeAddress = CardanoWasm.RewardAddress.new(
+      walletNetworkId,
+      stakeKey
+    )
+      .to_address()
+      .to_bech32();
     const balanceHex = await Wallet.getBalance();
     const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
-    console.log(stakeAddress);
 
     var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
+    if (stakeInfo.pool_id === bech32stakePoolId) throw new Error("stake address is already delegated to selected pool.")
+
     var network: string = stakeInfo.network;
     const controlledAmount = stakeInfo.controlled_amount;
 
@@ -152,17 +163,20 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
       undefined
     )
 
-    console.log("bech32: ", address);
 
     const txHash = await Wallet.submitTx(
       Buffer.from(signedTx.to_bytes()).toString("hex")
     );
 
     console.log(txHash);
-
+    if (window.confirm(`Your Transaction Hash is: ${txHash}. \nIf you click "OK" a new tab will open to CardanoScan to see your transaction. (It may take several minutes to populate.) \nCancel will stay at this website.`)) {
+      const prefix = network === "mainnet" ? "" : network === "preview" ? "preview." : "preprod.";
+      let newTab = window.open();
+      newTab.location.href = `https://${prefix}cardanoscan.io/transaction/${txHash}`; 
+    };
     return ([txHash, address]);
   } catch (error) {
-    alert(`could not connect wallet due to: ${error}`)
+    alert(`could no delegate due to: ${error}`)
   }
 };
 
@@ -172,8 +186,8 @@ export async function getStakeActivity(stakeAddress: string, networkId: number) 
     method: "get",
     headers: { 'Content-Type': 'application/json' }
   })
-  .then((response) => {return response})
-  .catch((error) => {throw new Error("Address has no utxos.")})
+    .then((response) => { return response })
+    .catch((error) => { throw new Error("Address has no utxos.") })
   return isStakeActive.json()
 }
 

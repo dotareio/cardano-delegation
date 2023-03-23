@@ -1,3 +1,4 @@
+#### A delegation method that uses cip30 to improve the quality of life for developers and delegators.
 ![](https://img.shields.io/badge/Preview-Up-brightgreen)
 ![](https://img.shields.io/badge/Pre--Production-Up-brightgreen)
 ![](https://img.shields.io/badge/Mainnet-Up-brightgreen)
@@ -46,16 +47,11 @@ https://stackoverflow.com/a/61722010
 How to load wasm into Laravel with mix:
 https://laravel-mix.com/docs/6.0/quick-webpack-configuration
 
-**if you are getting CORS error on localhost with chromium browser try this extention**
-
-https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino
-
 ---
-Ways to support:
-<div style="background-color:#4682B4">
- <img src="https://fiso.teddyswap.org/teddy-logo.svg">
-</div>
+**Ways to support:**
+*Delegate:*
+https://www.dotare.io/stake-pool/ (proof this package works on wordpress.)
 
-https://fiso.teddyswap.org Ticker DOTAR
-<br />
-https://github.com/dotareio/cardano-delegation/issues/new/choose
+*Post Issues:*
+https://github.com/dotareio/cardano-delegation/issues/new/choose 
+*Templates:* Bug, Feature Request, Security Vuln
