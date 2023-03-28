@@ -1,1 +1,5 @@
-Ask a Question
+---
+question: 
+labels: 'question'
+assignees: ''
+---
