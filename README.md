@@ -4,6 +4,7 @@
 ![](https://img.shields.io/badge/Mainnet-Up-brightgreen)
 
 ![npm](https://img.shields.io/npm/dt/@dotare/cardano-delegation?style=for-the-badge)
+
 ![](https://github.com/dotareio/public/blob/main/cardano-delegation-demo.gif)
 ##### New changes you will now be able to select network id in parameters (Preview: 0, Mainnet: 1, Pre-Prod: 2)
 ```
