@@ -176,7 +176,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     };
     return ([txHash, address]);
   } catch (error) {
-    alert(`could no delegate due to: ${error}`)
+    alert(`could not delegate due to: ${error}`)
   }
 };
 
