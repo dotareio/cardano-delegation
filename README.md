@@ -61,4 +61,4 @@ Earn more than just ADA
 *Post Issues:*
 https://github.com/dotareio/cardano-delegation/issues/new/choose
 
-*Templates:* Bug, Feature Request, Security Vuln
+*Templates:* Question, Bug, Feature Request, Security Vuln
