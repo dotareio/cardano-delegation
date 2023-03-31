@@ -171,12 +171,18 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     console.log(txHash);
     if (window.confirm(`Your Transaction Hash is: ${txHash}. \nIf you click "OK" a new tab will open to CardanoScan to see your transaction. (It may take several minutes to populate.) \nCancel will stay at this website.`)) {
       const prefix = network === "mainnet" ? "" : network === "preview" ? "preview." : "preprod.";
-      let newTab = window.open();
+      var newTab = window.open(`https://${prefix}cardanoscan.io/transaction/${txHash}`, '_blank');
       newTab.location.href = `https://${prefix}cardanoscan.io/transaction/${txHash}`; 
     };
     return ([txHash, address]);
   } catch (error) {
-    alert(`could not delegate due to: ${error}`)
+    switch (error.name) {
+      case 'TypeError':
+        alert('New tab was blocked from opening, look for pop-up blocked notification to see link.');
+        break;
+      default:
+        alert(`could not delegate due to: ${error}`)
+    }
   }
 };
 
@@ -187,7 +193,7 @@ export async function getStakeActivity(stakeAddress: string, networkId: number) 
     headers: { 'Content-Type': 'application/json' }
   })
     .then((response) => { return response })
-    .catch((error) => { throw new Error("Address has no utxos.") })
+    .catch(() => { throw new Error("Address has no utxos.") })
   return isStakeActive.json()
 }
 
