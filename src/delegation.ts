@@ -6,11 +6,7 @@ export async function Cardano() {
   return Loader.Cardano;
 }
 
-export async function delegationTx(
-  stakePoolId: string,
-  walletName: string,
-  chosenNetworkId: number = 1
-) {
+export async function delegationTx(stakePoolId: string, walletName: string, chosenNetworkId: number = 1) {
   const CardanoWasm = await Cardano();
   if (!window.cardano?.[walletName]) {
     alert(
@@ -40,7 +36,6 @@ export async function delegationTx(
       rewardAddress = await Wallet.getRewardAddresses().then((x) => x[0]);
       walletNetworkId = await Wallet.getNetworkId();
     }
-    if (walletName === "eternl") alert("Loading Eternl wallet, please wait.");
     const stakeKey = await CardanoWasm.StakeCredential.from_keyhash(
       CardanoWasm.Ed25519KeyHash.from_bytes(
         Buffer.from(rewardAddress.slice(2), "hex")
@@ -122,8 +117,6 @@ export async function delegationTx(
 
     const txBuilder = CardanoWasm.TransactionBuilder.new(txBuilderConfig);
 
-    // const certs = CardanoWasm.Certificates.new();
-
     if (!isStakeActive) {
       txBuilder.add_cert(
         CardanoWasm.SingleCertificateBuilder.new(
@@ -157,8 +150,6 @@ export async function delegationTx(
       ).payment_key()
     );
 
-    // txBuilder.set_certs(certs);
-
     const addressHex = usedAddresses[0];
     const address = CardanoWasm.BaseAddress.from_address(
       CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex"))
@@ -166,53 +157,32 @@ export async function delegationTx(
       .to_address()
       .to_bech32();
 
-    const utxos = (await Wallet.getUtxos()).map((utxo, index) => {
-      console.log(utxo);
-      return CardanoWasm.TransactionInput.new(
-        CardanoWasm.TransactionHash.from_bytes(Buffer.from(utxo, "hex")),
-        index
-      );
-    });
-    console.log(utxos);
-    const utxoOut = CardanoWasm.TransactionUnspentOutputs.new();
-    utxos.map((utxo) => utxoOut.add(utxo));
+    const utxos = await Wallet.getUtxos()
 
-    const uxtosHex = await Wallet.getUtxos();
-    const utxo = CardanoWasm.TransactionUnspentOutput.from_bytes(
-      Buffer.from(uxtosHex[0], "hex")
-    );
+    const utxo = CardanoWasm.TransactionUnspentOutput.from_bytes(Buffer.from(utxos[0], 'hex'), )
+
     txBuilder.add_input(
-      CardanoWasm.TransactionInput.new(
-        Buffer.from(utxo.input().transaction_id().to_bytes(), "hex").toString(
-          "hex"
-        ),
-        0
-      ),
-      CardanoWasm.TransactionOutput.new(
-        CardanoWasm.Address.from_bech32(address),
-        CardanoWasm.Value.zero()
-      )
-    );
+      CardanoWasm.SingleInputBuilder.new(
+        utxo.input(), utxo.output()
+      ).payment_key()
+    )
 
-    txBuilder.set_ttl(latestBlock + 500);
-
-    txBuilder.add_change_if_needed(
-      CardanoWasm.Address.from_bytes(Buffer.from(addressHex, "hex"))
-    );
-
-    const txBody = txBuilder.build();
-
+    txBuilder.set_ttl(CardanoWasm.BigNum.from_str((latestBlock + 500).toString()
+    ));
+    
+    const signedTxBody = txBuilder.build(0, CardanoWasm.Address.from_bech32(address));
+    
     const transaction = CardanoWasm.Transaction.new(
-      txBuilder.build(),
+      signedTxBody.body(),
       CardanoWasm.TransactionWitnessSet.new()
-    );
-
+      );
+      
     const witness = await Wallet.signTx(
       Buffer.from(transaction.to_bytes(), "hex").toString("hex"),
       false
     );
     const signedTx = CardanoWasm.Transaction.new(
-      txBody,
+      signedTxBody,
       CardanoWasm.TransactionWitnessSet.from_bytes(Buffer.from(witness, "hex")),
       undefined
     );
