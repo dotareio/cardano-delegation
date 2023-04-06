@@ -43,14 +43,14 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
         Buffer.from(rewardAddress.slice(2), "hex")
       )
     );
-    
+
     const stakeAddress = CardanoWasm.RewardAddress.new(
       walletNetworkId,
       stakeKey
     )
       .to_address()
       .to_bech32();
-      
+
     const balanceHex = await Wallet.getBalance();
 
     const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
@@ -161,7 +161,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
 
     const utxos = await Wallet.getUtxos()
 
-    const utxo = CardanoWasm.TransactionUnspentOutput.from_bytes(Buffer.from(utxos[0], 'hex'), )
+    const utxo = CardanoWasm.TransactionUnspentOutput.from_bytes(Buffer.from(utxos[0], 'hex'))
 
     txBuilder.add_input(
       CardanoWasm.SingleInputBuilder.new(
@@ -171,14 +171,14 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
 
     txBuilder.set_ttl(CardanoWasm.BigNum.from_str((latestBlock + 500).toString()
     ));
-    
+
     const signedTxBody = txBuilder.build(0, CardanoWasm.Address.from_bech32(address));
-    
+
     const transaction = CardanoWasm.Transaction.new(
       signedTxBody.body(),
       CardanoWasm.TransactionWitnessSet.new()
-      );
-      
+    );
+
     const witness = await Wallet.signTx(
       Buffer.from(transaction.to_bytes(), "hex").toString("hex"),
       false
@@ -199,7 +199,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     if (window.confirm(`Your Transaction Hash is: ${txHash}. \nIf you click "OK" a new tab will open to CardanoScan to see your transaction. (It may take several minutes to populate.) \nCancel will stay at this website.`)) {
       const prefix = network === "mainnet" ? "" : network === "preview" ? "preview." : "preprod.";
       var newTab = window.open(`https://${prefix}cardanoscan.io/transaction/${txHash}`, '_blank');
-      newTab.location.href = `https://${prefix}cardanoscan.io/transaction/${txHash}`; 
+      newTab.location.href = `https://${prefix}cardanoscan.io/transaction/${txHash}`;
     };
     return ([txHash, address]);
   } catch (error) {
@@ -214,19 +214,19 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
 };
 
 export async function getStakeActivity(stakeAddress: string, networkId: number) {
-  const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}/${networkId}`, {
-    mode: 'cors',
-    method: "get",
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => { return response })
-    .catch(() => { throw new Error("Address has no utxos.") })
+  const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}/${networkId}`, 
+    {
+      mode: 'cors',
+      method: "get",
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => { return response })
+      .catch(() => { throw new Error("Address has no utxos.") })
   return isStakeActive.json()
 }
 
 export async function getFeeParams(network: string) {
-  const feeParams = await fetch(
-    `https://api.dotare.io/getFeeParams/${network}`,
+  const feeParams = await fetch(`https://api.dotare.io/getFeeParams/${network}`,
     {
       mode: "cors",
       method: "get",
@@ -237,8 +237,7 @@ export async function getFeeParams(network: string) {
 }
 
 export async function getLatestBlock(network: string) {
-  const latestBlock = await fetch(
-    `https://api.dotare.io/getLatestBlock/${network}`,
+  const latestBlock = await fetch(`https://api.dotare.io/getLatestBlock/${network}`,
     {
       mode: "cors",
       method: "get",
