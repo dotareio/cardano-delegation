@@ -1,6 +1,9 @@
+#### A delegation method that uses cip30 to improve the quality of life for developers and delegators.
 ![](https://img.shields.io/badge/Preview-Up-brightgreen)
 ![](https://img.shields.io/badge/Pre--Production-Up-brightgreen)
 ![](https://img.shields.io/badge/Mainnet-Up-brightgreen)
+
+![npm](https://img.shields.io/npm/dt/@dotare/cardano-delegation?style=for-the-badge)
 
 ![](https://github.com/dotareio/public/blob/main/cardano-delegation-demo.gif)
 ##### New changes you will now be able to select network id in parameters (Preview: 0, Mainnet: 1, Pre-Prod: 2)
@@ -46,16 +49,16 @@ https://stackoverflow.com/a/61722010
 How to load wasm into Laravel with mix:
 https://laravel-mix.com/docs/6.0/quick-webpack-configuration
 
-**if you are getting CORS error on localhost with chromium browser try this extention**
-
-https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino
-
 ---
-Ways to support:
-<div style="background-color:#4682B4">
- <img src="https://fiso.teddyswap.org/teddy-logo.svg">
-</div>
+**Ways to support:**
 
-https://fiso.teddyswap.org Ticker DOTAR
-<br />
+*Delegate:*
+https://www.dotare.io/stake-pool/ (proof this package works on wordpress.)
+
+<img src="https://github.com/dotareio/public/blob/main/asset19skal0agalysqpgfx63gswkpzc3hs24h9g9pg0.png" width="50" alt="Royal Pool"> <img src="https://github.com/dotareio/public/blob/main/asset1fy52surzfc4ezrxaynfqqrnk4uz3cha25vcelt.png" width="50" alt="CCCC Pool"> <img src="https://teddyswap.org/assets/img/services/farming.png" width="50" alt="Teddy FISO Pool">
+Earn more than just ADA
+
+*Post Issues:*
 https://github.com/dotareio/cardano-delegation/issues/new/choose
+
+*Templates:* Question, Bug, Feature Request, Security Vuln
