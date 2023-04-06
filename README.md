@@ -62,3 +62,11 @@ Earn more than just ADA
 https://github.com/dotareio/cardano-delegation/issues/new/choose
 
 *Templates:* Question, Bug, Feature Request, Security Vuln
+
+---
+**References:**
+
+*As seen on Dapp Central:* [YouTube Channel](https://youtu.be/LHUoFHwWfeM?t=877)
+
+*Powered By:* 
+<img src="https://github.com/dotareio/public/blob/main/dcspark.svg" width="100"> & <img src="https://github.com/dotareio/public/blob/main/blockfrost.svg" width="100">
