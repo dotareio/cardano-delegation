@@ -6,17 +6,18 @@
 ![npm](https://img.shields.io/npm/dt/@dotare/cardano-delegation?style=for-the-badge)
 
 ![](https://github.com/dotareio/public/blob/main/cardano-delegation-demo.gif)
-##### New changes you will now be able to select network id in parameters (Preview: 0, Mainnet: 1, Pre-Prod: 2)
-```
-                                Pool ID Hash, WalletName, NetworkId: (Preview: 0, Mainnet: 1, Pre-Prod: 2)
-delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami', 0)
-```
 ##### default will be mainnet: 1
 ###### install
 ```
 npm i @dotare/cardano-delegation
 ```
 ###### add method 
+##### New changes you will now be able to select network id in parameters (Preview: 0, Mainnet: 1, Pre-Prod: 2)
+```
+                                Pool ID Hash, WalletName, NetworkId: (Preview: 0, Mainnet: 1, Pre-Prod: 2)
+delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami', 0)
+```
+###### react example
 ```
 import React from 'react';
 import { delegationTx } from '@dotare/cardano-delegation';
@@ -54,13 +55,10 @@ https://laravel-mix.com/docs/6.0/quick-webpack-configuration
 
 *Delegate:*
 https://www.dotare.io/stake-pool/ (proof this package works on wordpress.)
-
-<img src="https://github.com/dotareio/public/blob/main/asset19skal0agalysqpgfx63gswkpzc3hs24h9g9pg0.png" width="50" alt="Royal Pool"> <img src="https://github.com/dotareio/public/blob/main/asset1fy52surzfc4ezrxaynfqqrnk4uz3cha25vcelt.png" width="50" alt="CCCC Pool"> <img src="https://teddyswap.org/assets/img/services/farming.png" width="50" alt="Teddy FISO Pool">
-Earn more than just ADA
+<img src="https://github.com/dotareio/public/blob/main/asset19skal0agalysqpgfx63gswkpzc3hs24h9g9pg0.png" width="50" alt="Royal Pool"> <img src="https://github.com/dotareio/public/blob/main/asset1fy52surzfc4ezrxaynfqqrnk4uz3cha25vcelt.png" width="50" alt="CCCC Pool"> <img src="https://teddyswap.org/assets/img/services/farming.png" width="50" alt="Teddy FISO Pool"> Earn more than just ADA
 
 *Post Issues:*
 https://github.com/dotareio/cardano-delegation/issues/new/choose
-
 *Templates:* Question, Bug, Feature Request, Security Vuln
 
 ---
@@ -68,5 +66,4 @@ https://github.com/dotareio/cardano-delegation/issues/new/choose
 
 *As seen on Dapp Central:* [YouTube Channel](https://youtu.be/LHUoFHwWfeM?t=877)
 
-*Powered By:* 
-<img src="https://github.com/dotareio/public/blob/main/dcspark.svg" width="100"> & <img src="https://github.com/dotareio/public/blob/main/blockfrost.svg" width="100">
+*Powered By:* <a href="https://www.dcspark.io/"><img src="https://github.com/dotareio/public/blob/main/dcspark.svg" width="100"></a> & <a href="https://blockfrost.io/"><img src="https://github.com/dotareio/public/blob/main/blockfrost.svg" width="110"></a>
