@@ -19,10 +19,13 @@
   "keywords": [
     "cip30",
     "cardano",
+    "browser",
     "wallet",
     "ada",
     "stake",
-    "pool"
+    "pool",
+    "delegation",
+    "button"
   ],
   "author": "Dotare",
   "license": "ISC",
