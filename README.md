@@ -55,10 +55,12 @@ https://laravel-mix.com/docs/6.0/quick-webpack-configuration
 
 *Delegate:*
 https://www.dotare.io/stake-pool/ (proof this package works on wordpress.)
-<img src="https://github.com/dotareio/public/blob/main/asset19skal0agalysqpgfx63gswkpzc3hs24h9g9pg0.png" width="50" alt="Royal Pool"> <img src="https://github.com/dotareio/public/blob/main/asset1fy52surzfc4ezrxaynfqqrnk4uz3cha25vcelt.png" width="50" alt="CCCC Pool"> <img src="https://teddyswap.org/assets/img/services/farming.png" width="50" alt="Teddy FISO Pool"> Earn more than just ADA
+
+<a href="https://wenlobster.io/"><img src="https://github.com/dotareio/public/blob/main/asset19skal0agalysqpgfx63gswkpzc3hs24h9g9pg0.png" width="50" alt="Royal Pool"></a> <a href="https://ccccoin.io/"><img src="https://github.com/dotareio/public/blob/main/asset1fy52surzfc4ezrxaynfqqrnk4uz3cha25vcelt.png" width="50" alt="CCCC Pool"></a> <a href="https://teddyswap.org/"><img src="https://teddyswap.org/assets/img/services/farming.png" width="50" alt="Teddy FISO Pool"></a> Earn more than just ADA
 
 *Post Issues:*
 https://github.com/dotareio/cardano-delegation/issues/new/choose
+
 *Templates:* Question, Bug, Feature Request, Security Vuln
 
 ---
