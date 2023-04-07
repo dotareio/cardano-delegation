@@ -6,13 +6,13 @@
 ![npm](https://img.shields.io/npm/dt/@dotare/cardano-delegation?style=for-the-badge)
 
 ![](https://github.com/dotareio/public/blob/main/cardano-delegation-demo.gif)
-##### default will be mainnet: 1
 ###### install
 ```
 npm i @dotare/cardano-delegation
 ```
 ###### add method 
 ##### New changes you will now be able to select network id in parameters (Preview: 0, Mainnet: 1, Pre-Prod: 2)
+##### default will be mainnet: 1
 ```
                                 Pool ID Hash, WalletName, NetworkId: (Preview: 0, Mainnet: 1, Pre-Prod: 2)
 delegationTx('5653f2a1aea5318f43a63e0148076348a475d3c89283a8c1eb498fb7', 'nami', 0)
