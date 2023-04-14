@@ -172,10 +172,10 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     txBuilder.set_ttl(CardanoWasm.BigNum.from_str((latestBlock + 500).toString()
     ));
 
-    const signedTxBody = txBuilder.build(0, CardanoWasm.Address.from_bech32(address));
+    const signedTxBuilder = txBuilder.build(0, CardanoWasm.Address.from_bech32(address));
 
     const transaction = CardanoWasm.Transaction.new(
-      signedTxBody.body(),
+      signedTxBuilder.body(),
       CardanoWasm.TransactionWitnessSet.new()
     );
 
@@ -184,7 +184,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
       false
     );
     const signedTx = CardanoWasm.Transaction.new(
-      signedTxBody,
+      signedTxBuilder.body(),
       CardanoWasm.TransactionWitnessSet.from_bytes(Buffer.from(witness, "hex")),
       undefined
     );
@@ -214,14 +214,14 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
 };
 
 export async function getStakeActivity(stakeAddress: string, networkId: number) {
-  const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}/${networkId}`, 
+  const isStakeActive = await fetch(`https://api.dotare.io/getStakeInfo/${stakeAddress}/${networkId}`,
     {
       mode: 'cors',
       method: "get",
       headers: { 'Content-Type': 'application/json' }
     })
-      .then((response) => { return response })
-      .catch(() => { throw new Error("Address has no utxos.") })
+    .then((response) => { return response })
+    .catch(() => { throw new Error("Address has no utxos.") })
   return isStakeActive.json()
 }
 
