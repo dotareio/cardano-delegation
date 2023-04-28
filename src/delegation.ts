@@ -51,15 +51,10 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
       .to_address()
       .to_bech32();
 
-    const balanceHex = await Wallet.getBalance();
-
-    const balance = JSON.parse(CardanoWasm.Value.from_bytes(Buffer.from(balanceHex, "hex")).to_json());
-
     var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
     if (stakeInfo.pool_id === bech32stakePoolId) throw new Error("stake address is already delegated to selected pool.")
 
     var network: string = stakeInfo.network;
-    const controlledAmount = stakeInfo.controlled_amount;
 
     if (!network)
       throw new Error(
@@ -208,7 +203,10 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
         alert('New tab was blocked from opening, look for pop-up blocked notification to see link.');
         break;
       default:
-        alert(`could not delegate due to: ${error}`)
+        if (!error.name) alert(`could not delegate due to: ${error.info}`)
+        else {
+          alert(`could not delegate due to: ${error}`)
+        }
     }
   }
 };
@@ -225,7 +223,7 @@ export async function getStakeActivity(stakeAddress: string, networkId: number) 
   return isStakeActive.json()
 }
 
-export async function getFeeParams(network: string) {
+export async function getFeeParams(network: string | number) {
   const feeParams = await fetch(`https://api.dotare.io/getFeeParams/${network}`,
     {
       mode: "cors",
@@ -236,7 +234,7 @@ export async function getFeeParams(network: string) {
   return feeParams.json();
 }
 
-export async function getLatestBlock(network: string) {
+export async function getLatestBlock(network: string | number) {
   const latestBlock = await fetch(`https://api.dotare.io/getLatestBlock/${network}`,
     {
       mode: "cors",
