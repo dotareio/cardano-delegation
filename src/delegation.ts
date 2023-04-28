@@ -52,7 +52,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
       .to_bech32();
 
     var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
-    if (stakeInfo.pool_id === bech32stakePoolId) throw new Error("stake address is already delegated to selected pool.")
+    // if (stakeInfo.pool_id === bech32stakePoolId) throw new Error("stake address is already delegated to selected pool.")
 
     var network: string = stakeInfo.network;
 
@@ -198,8 +198,9 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
     };
     return ([txHash, address]);
   } catch (error) {
-    switch (error.name) {
-      case 'TypeError':
+    console.log(error, "error name: ", error.name, "message: ", error.message);
+    switch (error.message) {
+      case "Cannot read properties of null (reading 'location')":
         alert('New tab was blocked from opening, look for pop-up blocked notification to see link.');
         break;
       default:
