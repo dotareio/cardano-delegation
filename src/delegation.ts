@@ -52,7 +52,7 @@ export async function delegationTx(stakePoolId: string, walletName: string, chos
       .to_bech32();
 
     var stakeInfo = await getStakeActivity(stakeAddress, networkId).then(x => x);
-    // if (stakeInfo.pool_id === bech32stakePoolId) throw new Error("stake address is already delegated to selected pool.")
+    if (stakeInfo.pool_id === bech32stakePoolId) throw new Error("stake address is already delegated to selected pool.")
 
     var network: string = stakeInfo.network;
 
